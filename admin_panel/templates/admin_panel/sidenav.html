@@ -1,0 +1,18 @@
+{% load static %}
+<div class="admin_profile">
+    <img src="{% static "images/user.png" %}"/>
+    <h2>Admin</h2>
+</div>
+<br/>
+<ul class="sections">
+    <li><a href="adminpanel/">Dashboard</a></li>
+    <li><a href="adminpanel/teacher">Teacher</a></li>
+    <li><a href="adminpanel/students">Student</a></li>
+    <li><a href="adminpanel/courses">Courses</a></li>
+    <li><a href="adminpanel/questions">Questions</a></li>
+</ul>
+{% comment %} <a href="{% url "adminpanel" %}">Dashboard</a>
+<a href="{% url "teacher" %}">Teacher</a>
+<a href="{% url "students" %}">Student</a>
+<a href="{% url "courses" %}">Courses</a>
+<a href="{% url "questions" %}">Questions</a> {% endcomment %}
