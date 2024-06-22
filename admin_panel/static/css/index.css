@@ -175,3 +175,8 @@ footer {
     font-size: 1em; /* Larger font size for content */
     font-weight: bold; /* Bold text for emphasis */
 }
+
+.current_nav {
+    background-color: green;
+    color: white;
+}
