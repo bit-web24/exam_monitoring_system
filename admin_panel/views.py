@@ -5,7 +5,14 @@ from .forms import StudentForm, TeacherForm, ClassForm, CourseForm, ExamForm
 
 # SECTION: DASHBOARD
 def dashboard(request):
-    return render(request, 'dashboard/dashboard.html')
+    total = {
+        'students' : len(Student.objects.all()),
+        'teachers' : len(Teacher.objects.all()),
+        'courses' : len(Course.objects.all()),
+        'classes' : len(Class.objects.all()),
+        'exams' : len(Exam.objects.all()),
+    }
+    return render(request, 'dashboard/dashboard.html', {'total': total})
 
 def students(request):
     return render(request, 'students/dashboard.html')
