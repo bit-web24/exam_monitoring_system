@@ -1,0 +1,31 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Students {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "students/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Student List</h1>
+    <a href="{% url 'student_create' %}">Add New Student</a>
+    <ul>
+        {% for student in students %}
+            <li>
+                <a href="{% url 'student_detail' student.pk %}">{{ student.name }}</a> -
+                <a href="{% url 'student_update' student.pk %}">Edit</a> | 
+                <a href="{% url 'student_delete' student.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}
+
+
