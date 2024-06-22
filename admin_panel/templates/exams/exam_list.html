@@ -1,0 +1,31 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Exams {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "exams/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Exam List</h1>
+    <a href="{% url 'exam_create' %}">Add New Exam</a>
+    <ul>
+        {% for exam in exams %}
+            <li>
+                <a href="{% url 'exam_detail' exam.pk %}">{{ exam.name }}</a> -
+                <a href="{% url 'exam_update' exam.pk %}">Edit</a> | 
+                <a href="{% url 'exam_delete' exam.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}
+
+

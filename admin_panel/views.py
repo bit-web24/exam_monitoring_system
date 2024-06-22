@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Student
-from .forms import StudentForm
+from .models import Student, Teacher, Class, Course, Exam
+from .forms import StudentForm, TeacherForm, ClassForm, CourseForm, ExamForm
 
 # SECTION: DASHBOARD
 def dashboard(request):
@@ -58,3 +58,151 @@ def student_delete(request, pk):
         student.delete()
         return redirect('student_list')
     return render(request, 'students/student_confirm_delete.html', {'student': student})
+
+# SECTION: TEACHERS 
+def teacher_list(request):
+    teachers = Teacher.objects.all()
+    return render(request, 'teachers/teacher_list.html', {'teachers': teachers})
+
+def teacher_detail(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+    return render(request, 'teachers/teacher_detail.html', {'teacher': teacher})
+
+def teacher_create(request):
+    if request.method == 'POST':
+        form = TeacherForm(request.POST)
+        if form.is_valid():
+            teacher = form.save()
+            return redirect('teacher_detail', pk=teacher.pk)
+    else:
+        form = TeacherForm()
+    return render(request, 'teachers/teacher_form.html', {'form': form})
+
+def teacher_update(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+    if request.method == 'POST':
+        form = TeacherForm(request.POST, instance=teacher)
+        if form.is_valid():
+            form.save()
+            return redirect('teacher_list')
+    else:
+        form = TeacherForm(instance=teacher)
+    return render(request, 'teachers/teacher_form.html', {'form': form})
+
+def teacher_delete(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+    if request.method == 'POST':
+        teacher.delete()
+        return redirect('teacher_list')
+    return render(request, 'teachers/teacher_confirm_delete.html', {'teacher': teacher})
+
+# SECTION: CLASSES 
+def class_list(request):
+    classes = Class.objects.all()
+    return render(request, 'classes/class_list.html', {'classes': classes})
+
+def class_detail(request, pk):
+    _class = get_object_or_404(Class, pk=pk)
+    return render(request, 'classes/class_detail.html', {'class': _class})
+
+def class_create(request):
+    if request.method == 'POST':
+        form = ClassForm(request.POST)
+        if form.is_valid():
+            _class = form.save()
+            return redirect('class_detail', pk=_class.pk)
+    else:
+        form = ClassForm()
+    return render(request, 'classes/class_form.html', {'form': form})
+
+def class_update(request, pk):
+    _class = get_object_or_404(Class, pk=pk)
+    if request.method == 'POST':
+        form = ClassForm(request.POST, instance=_class)
+        if form.is_valid():
+            form.save()
+            return redirect('class_list')
+    else:
+        form = ClassForm(instance=_class)
+    return render(request, 'classes/class_form.html', {'form': form})
+
+def class_delete(request, pk):
+    _class = get_object_or_404(Class, pk=pk)
+    if request.method == 'POST':
+        _class.delete()
+        return redirect('class_list')
+    return render(request, 'classes/class_confirm_delete.html', {'class': _class})
+
+# SECTION: COURSES 
+def course_list(request):
+    courses = Course.objects.all()
+    return render(request, 'courses/course_list.html', {'courses': courses})
+
+def course_detail(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    return render(request, 'courses/course_detail.html', {'course': course})
+
+def course_create(request):
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            course = form.save()
+            return redirect('course_detail', pk=course.pk)
+    else:
+        form = CourseForm()
+    return render(request, 'courses/course_form.html', {'form': form})
+
+def course_update(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    if request.method == 'POST':
+        form = CourseForm(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+            return redirect('course_list')
+    else:
+        form = CourseForm(instance=course)
+    return render(request, 'courses/course_form.html', {'form': form})
+
+def course_delete(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    if request.method == 'POST':
+        course.delete()
+        return redirect('course_list')
+    return render(request, 'courses/course_confirm_delete.html', {'course': course})
+
+# SECTION: EXAMS 
+def exam_list(request):
+    exams = Exam.objects.all()
+    return render(request, 'exams/exam_list.html', {'exams': exams})
+
+def exam_detail(request, pk):
+    _exam = get_object_or_404(Exam, pk=pk)
+    return render(request, 'exams/exam_detail.html', {'exam': _exam})
+
+def exam_create(request):
+    if request.method == 'POST':
+        form = ExamForm(request.POST)
+        if form.is_valid():
+            _exam = form.save()
+            return redirect('exam_detail', pk=_exam.pk)
+    else:
+        form = ExamForm()
+    return render(request, 'exams/exam_form.html', {'form': form})
+
+def exam_update(request, pk):
+    _exam = get_object_or_404(Exam, pk=pk)
+    if request.method == 'POST':
+        form = ExamForm(request.POST, instance=_exam)
+        if form.is_valid():
+            form.save()
+            return redirect('exam_list')
+    else:
+        form = ExamForm(instance=_exam)
+    return render(request, 'exams/exam_form.html', {'form': form})
+
+def exam_delete(request, pk):
+    _exam = get_object_or_404(Exam, pk=pk)
+    if request.method == 'POST':
+        _exam.delete()
+        return redirect('exam_list')
+    return render(request, 'exams/exam_confirm_delete.html', {'exam': _exam})

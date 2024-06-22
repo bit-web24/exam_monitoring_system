@@ -1,0 +1,23 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Classes {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "classes/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Class Detail</h1>
+    <p><strong>ID:</strong> {{ class.class_id }}</p>
+    <p><strong>Name:</strong> {{ class.name }}</p>
+    <a href="{% url 'class_list' %}">Back to Class List</a>
+    <a href="{% url 'class_update' class.pk %}">Edit</a>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}

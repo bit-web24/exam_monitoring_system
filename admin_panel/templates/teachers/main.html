@@ -1,15 +1,11 @@
 <div class="grid-container">
     <div class="grid-item" style="background-color: #7cb342;">
-        <h2>Add Teacher</h2>
-        <p class="item-content"></p>
+        <h2>All Teachers</h2>
+        <p class="item-content"><a href="{% url "teacher_list" %}">list</a></p>
     </div>
     <div class="grid-item" style="background-color: #42a5f5;">
-        <h2>Remove Teacher</h2>
-        <p class="item-content"></p>
-    </div>
-    <div class="grid-item" style="background-color: #ef5350;">
-        <h2>Update Teachers Info</h2>
-        <p class="item-content"></p>
+        <h2>Add Teacher</h2>
+        <p class="item-content"><a href="{% url "teacher_create" %}">add</a></p>
     </div>
     <div class="grid-item" style="background-color: #8d6e63;">
         <h2>Assign Teachers to Classes</h2>

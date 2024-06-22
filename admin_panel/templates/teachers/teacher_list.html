@@ -1,0 +1,31 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Teachers {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "teachers/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Teacher List</h1>
+    <a href="{% url 'teacher_create' %}">Add New Teacher</a>
+    <ul>
+        {% for teacher in teachers %}
+            <li>
+                <a href="{% url 'teacher_detail' teacher.pk %}">{{ teacher.name }}</a> -
+                <a href="{% url 'teacher_update' teacher.pk %}">Edit</a> | 
+                <a href="{% url 'teacher_delete' teacher.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}
+
+

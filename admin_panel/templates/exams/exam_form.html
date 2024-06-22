@@ -1,22 +1,22 @@
 {% extends "dashboard/index.html" %}
 
-{% block title %} Teachers {% endblock title %}
+{% block title %} Exams {% endblock title %}
 
 {% block header %}
     {% include "dashboard/header.html" %}
 {% endblock header %}
 
 {% block sidenav %}
-    {% include "teachers/sidenav.html" %}
+    {% include "exams/sidenav.html" %}
 {% endblock sidenav %}
 
 {% block main %}
-    <h1>Are you sure you want to delete {{ student.name }}?</h1>
+    <h1>Exam Form</h1>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Yes, delete</button>
+        {{ form.as_p }}
+        <button type="submit">Save</button>
     </form>
-    <a href="{% url 'student_list' %}">Cancel</a>
 {% endblock main %}
 
 {% block footer %}

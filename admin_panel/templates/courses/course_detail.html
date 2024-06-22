@@ -1,0 +1,23 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Courses {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "courses/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Course Detail</h1>
+    <p><strong>ID:</strong> {{ course.course_id }}</p>
+    <p><strong>Name:</strong> {{ course.name }}</p>
+    <a href="{% url 'course_list' %}">Back to Course List</a>
+    <a href="{% url 'course_update' course.pk %}">Edit</a>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}

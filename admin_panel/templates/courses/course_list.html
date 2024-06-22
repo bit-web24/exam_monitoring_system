@@ -1,0 +1,31 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Courses {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "courses/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Course List</h1>
+    <a href="{% url 'course_create' %}">Add New Course</a>
+    <ul>
+        {% for course in courses %}
+            <li>
+                <a href="{% url 'course_detail' course.pk %}">{{ course.name }}</a> -
+                <a href="{% url 'course_update' course.pk %}">Edit</a> | 
+                <a href="{% url 'course_delete' course.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}
+
+

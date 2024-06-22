@@ -1,0 +1,23 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Exams {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "exams/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Exam Detail</h1>
+    <p><strong>ID:</strong> {{ exam.exam_id }}</p>
+    <p><strong>Name:</strong> {{ exam.name }}</p>
+    <a href="{% url 'exam_list' %}">Back to Exam List</a>
+    <a href="{% url 'exam_update' exam.pk %}">Edit</a>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}

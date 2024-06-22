@@ -1,0 +1,31 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Classes {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "classes/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Class List</h1>
+    <a href="{% url 'class_create' %}">Add New Class</a>
+    <ul>
+        {% for class in classes %}
+            <li>
+                <a href="{% url 'class_detail' class.pk %}">{{ class.name }}</a> -
+                <a href="{% url 'class_update' class.pk %}">Edit</a> | 
+                <a href="{% url 'class_delete' class.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}
+
+
