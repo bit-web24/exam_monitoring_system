@@ -1,8 +1,16 @@
 from django.db import models
 
+class Course(models.Model):
+    course_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.name
+
 class Class(models.Model):
     class_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
+    courses = models.ManyToManyField(Course, blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -26,13 +34,6 @@ class Teacher(models.Model):
     classes = models.ManyToManyField(Class, blank=True)
     
     def __str__(self):
-        return self.name
-
-class Course(models.Model):
-    course_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-
-    def __str__(self) -> str:
         return self.name
 
 class Exam(models.Model):

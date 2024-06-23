@@ -174,6 +174,23 @@ def class_delete(request, pk):
         return redirect('class_list')
     return render(request, 'classes/class_confirm_delete.html', {'class': _class})
 
+def class_assigncourse(request):
+    if request.method == 'POST':
+        class_id = request.POST.get('class_id')
+        courses = request.POST.getlist('courses')
+        selected_class = Class.objects.get(pk=class_id)
+        for course in courses:
+            if not selected_class.courses.filter(pk=course).exists():
+                selected_class.courses.add(course)
+        selected_class.save()
+
+        return redirect('class_assigncourse')
+    
+    courses = Course.objects.all()
+    classes = Class.objects.all()
+    return render(request, 'classes/class_assigncourse.html', {'courses': courses, 'classes': classes})
+
+
 # SECTION: COURSES 
 def course_list(request):
     courses = Course.objects.all()

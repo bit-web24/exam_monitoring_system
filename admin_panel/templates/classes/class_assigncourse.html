@@ -1,0 +1,39 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Classes {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "classes/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Assign Courses to Class</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="class_id">Select Class:</label>
+        <select name="class_id" id="class_id">
+            {% for class in classes %}
+                <option value="{{ class.pk }}">{{ class.name }}</option>
+            {% endfor %}
+        </select>
+
+        <h2>Select Courses:</h2>
+        {% for course in courses %}
+            <div>
+                <input type="checkbox" id="course_{{ course.pk }}" name="courses" value="{{ course.pk }}">
+                <label for="course_{{ course.pk }}">{{ course.name }}</label>
+            </div>
+        {% endfor %}
+
+        <button type="submit">Assign</button>
+    </form>
+    <a href="{% url 'class_list' %}">Back to Class List</a>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}

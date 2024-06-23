@@ -14,6 +14,11 @@
     <h1>Class Detail</h1>
     <p><strong>ID:</strong> {{ class.class_id }}</p>
     <p><strong>Name:</strong> {{ class.name }}</p>
+    <p><strong>Courses:</strong>
+        {% for course in class.courses.all %}
+            <code style="background-color: #9fefef;">{{ course.name }}</code>
+        {% endfor %}
+    </p>
     <a href="{% url 'class_list' %}">Back to Class List</a>
     <a href="{% url 'class_update' class.pk %}">Edit</a>
 {% endblock main %}
