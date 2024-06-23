@@ -66,6 +66,24 @@ def student_delete(request, pk):
         return redirect('student_list')
     return render(request, 'students/student_confirm_delete.html', {'student': student})
 
+def student_assign2class(request):
+    if request.method == 'POST':
+        class_id = request.POST.get('class_id')
+        student_ids = request.POST.getlist('students')
+        selected_class = Class.objects.get(pk=class_id)
+
+        for student_id in student_ids:
+            student = Student.objects.get(pk=student_id)
+            student.class_id = selected_class
+            student.save()
+
+        return redirect('student_assign2class')
+    
+    students = [stud for stud in Student.objects.all() if not stud.class_id]
+    classes = Class.objects.all()
+    return render(request, 'students/student_assign2class.html', {'students': students, 'classes': classes})
+
+
 # SECTION: TEACHERS 
 def teacher_list(request):
     teachers = Teacher.objects.all()
