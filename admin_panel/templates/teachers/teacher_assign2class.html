@@ -1,0 +1,39 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Teachers {% endblock title %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "teachers/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Assign Teachers to Class</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="teacher_id">Select Teacher:</label>
+        <select name="teacher_id" id="teacher_id">
+            {% for teacher in teachers %}
+                <option value="{{ teacher.pk }}">{{ teacher.name }}</option>
+            {% endfor %}
+        </select>
+
+        <h2>Select Classes:</h2>
+        {% for class in classes %}
+            <div>
+                <input type="checkbox" id="class_{{ class.pk }}" name="classes" value="{{ class.pk }}">
+                <label for="class_{{ class.pk }}">{{ class.name }}</label>
+            </div>
+        {% endfor %}
+
+        <button type="submit">Assign</button>
+    </form>
+    <a href="{% url 'teacher_list' %}">Back to Teacher List</a>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}

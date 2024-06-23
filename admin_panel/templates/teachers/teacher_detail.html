@@ -16,6 +16,11 @@
     <p><strong>Name:</strong> {{ teacher.name }}</p>
     <p><strong>Email:</strong> {{ teacher.email }}</p>
     <p><strong>Phone:</strong> {{ teacher.phone }}</p>
+    <p><strong>Classes Assigned:</strong>
+        {% for class in teacher.classes.all %}
+            <code style="background-color: #9fefef;">{{ class.name }}</code>
+        {% endfor %}
+    </p>
     <a href="{% url 'teacher_list' %}">Back to Teacher List</a>
     <a href="{% url 'teacher_update' teacher.pk %}">Edit</a>
 {% endblock main %}

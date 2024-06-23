@@ -121,6 +121,22 @@ def teacher_delete(request, pk):
         return redirect('teacher_list')
     return render(request, 'teachers/teacher_confirm_delete.html', {'teacher': teacher})
 
+def teacher_assign2class(request):
+    if request.method == 'POST':
+        teacher_id = request.POST.get('teacher_id')
+        classes = request.POST.getlist('classes')
+        selected_teacher = Teacher.objects.get(pk=teacher_id)
+        for _class in classes:
+            if not selected_teacher.classes.filter(pk=_class).exists():
+                selected_teacher.classes.add(_class)
+        selected_teacher.save()
+
+        return redirect('teacher_assign2class')
+    
+    teachers = Teacher.objects.all()
+    classes = Class.objects.all()
+    return render(request, 'teachers/teacher_assign2class.html', {'teachers': teachers, 'classes': classes})
+
 # SECTION: CLASSES 
 def class_list(request):
     classes = Class.objects.all()

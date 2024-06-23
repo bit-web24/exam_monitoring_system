@@ -24,6 +24,7 @@ urlpatterns = [
     path('teachers/update/<int:pk>/', views.teacher_update, name='teacher_update'),
     path('teachers/delete/<int:pk>/', views.teacher_delete, name='teacher_delete'),
     path('teachers/detail/<int:pk>/', views.teacher_detail, name='teacher_detail'),
+    path('teachers/assign2class', views.teacher_assign2class, name='teacher_assign2class'),
 
     # classes
     path('classes/all', views.class_list, name='class_list'),
