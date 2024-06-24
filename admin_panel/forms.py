@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student, Teacher, Class, Course, Exam
+from .models import ClassCourseTeacher, Student, Teacher, Class, Course, Exam
 
 class StudentForm(forms.ModelForm):
     class Meta:
@@ -44,14 +44,13 @@ class SelectClassForm(forms.Form):
         if teacher:
             self.fields['class_id'].queryset = teacher.classes.all()
 
-class AssignCourseForm(forms.Form):
-    courses = forms.ModelMultipleChoiceField(
-        queryset=Course.objects.none(),
-        widget=forms.CheckboxSelectMultiple
-    )
+class AssignCourseForm(forms.ModelForm):
+    class Meta:
+        model = ClassCourseTeacher
+        fields = ['course_id']
 
     def __init__(self, *args, **kwargs):
         class_instance = kwargs.pop('class_instance', None)
         super(AssignCourseForm, self).__init__(*args, **kwargs)
         if class_instance:
-            self.fields['courses'].queryset = class_instance.courses.all()
+            self.fields['course_id'].queryset = class_instance.courses.all()

@@ -164,25 +164,28 @@ def assign_course(request, teacher_id, class_id):
     class_instance = get_object_or_404(Class, pk=class_id)
     
     if request.method == 'POST':
-        selected_course_ids = request.POST.getlist('courses')
-        selected_courses = Course.objects.filter(pk__in=selected_course_ids)
-        
-        class_course_teacher = ClassCourseTeacher.objects.create(
-            teacher_id=teacher,
-            class_id=class_instance,
-        )
-        
-        class_course_teacher.courses.add(*selected_courses)
-        
-        return redirect('class_course_teacher_list')
-    
-    courses = class_instance.courses.all()
+        form = AssignCourseForm(request.POST, class_instance=class_instance)
+        if form.is_valid():
+            course = form.cleaned_data['course_id']
+            ClassCourseTeacher.objects.create(
+                teacher_id=teacher,
+                class_id=class_instance,
+                course_id=course
+            )
+            return redirect('class_course_teacher_list')
+    else:
+        form = AssignCourseForm(class_instance=class_instance)
     
     return render(request, 'teachers/assign_course.html', {
         'teacher': teacher,
         'class': class_instance,
-        'courses': courses,
+        'form': form,
     })
+
+def load_classes(request):
+    teacher_id = request.GET.get('teacher_id')
+    classes = Class.objects.filter(teacher__id=teacher_id)
+    return JsonResponse(list(classes.values('id', 'name')), safe=False)
 
 def class_course_teacher_list(request):
     assignments = ClassCourseTeacher.objects.all()

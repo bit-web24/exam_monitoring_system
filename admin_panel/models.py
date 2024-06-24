@@ -46,7 +46,7 @@ class Exam(models.Model):
 class ClassCourseTeacher(models.Model):
     teacher_id = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     class_id = models.ForeignKey(Class, on_delete=models.CASCADE)
-    courses = models.ManyToManyField(Course)
+    course_id = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.class_id.name} - {', '.join(course.name for course in self.courses.all())} - {self.teacher_id.name}"
+        return f"{self.class_id.name} - {self.course_id.name} - {self.teacher_id.name}"

@@ -11,16 +11,10 @@
 {% endblock sidenav %}
 
 {% block main %}
+    <h1>Assign Course to {{ teacher.name }} for Class {{ class.name }}</h1>
     <form method="post">
         {% csrf_token %}
-        <h1>Assign Course to {{ teacher.name }} for Class {{ class.name }}</h1>
-        {% for course in courses %}
-            <div>
-                <input type="checkbox" id="course_{{ course.pk }}" name="courses" value="{{ course.pk }}">
-                <label for="course_{{ course.pk }}">{{ course.name }}</label>
-            </div>
-        {% endfor %}
-
+        {{ form.as_p }}
         <button type="submit">Assign</button>
     </form>
     <a href="{% url 'select_teacher' %}">Go Back</a>

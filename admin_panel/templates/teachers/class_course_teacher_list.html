@@ -24,13 +24,7 @@
             {% for assignment in assignments %}
             <tr>
                 <td>{{ assignment.class_id.name }}</td>
-                <td>
-                    [
-                    {% for course in assignment.courses.all %}
-                        <code style="background-color: red;">{{ course }}</code>
-                    {% endfor %}
-                    ]
-                </td>
+                <td>{{ assignment.course_id.name }}</td>
                 <td>{{ assignment.teacher_id.name }}</td>
             </tr>
             {% endfor %}
