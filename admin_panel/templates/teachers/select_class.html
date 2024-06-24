@@ -1,0 +1,47 @@
+{% extends "dashboard/index.html" %}
+
+{% block title %} Select Class {% endblock title %}
+
+{% block head %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#id_teacher').change(function() {
+                var teacherId = $(this).val();
+                $.ajax({
+                    url: "{% url 'load_classes' %}",
+                    data: {
+                        'teacher_id': teacherId
+                    },
+                    success: function(data) {
+                        $("#id_class_id").html("");
+                        $.each(data, function(key, value) {
+                            $("#id_class_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock head %}
+
+{% block header %}
+    {% include "dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "teachers/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Select Class for {{ teacher.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Next</button>
+    </form>
+{% endblock main %}
+
+{% block footer %}
+    {% include "dashboard/footer.html" %}
+{% endblock footer %}

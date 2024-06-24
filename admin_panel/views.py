@@ -1,7 +1,8 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Student, Teacher, Class, Course, Exam
-from .forms import StudentForm, TeacherForm, ClassForm, CourseForm, ExamForm
+from .models import ClassCourseTeacher, Student, Teacher, Class, Course, Exam
+from .forms import AssignCourseForm, SelectClassForm, SelectTeacherForm, StudentForm, TeacherForm, ClassForm, CourseForm, ExamForm
 
 # SECTION: DASHBOARD
 def dashboard(request):
@@ -136,6 +137,62 @@ def teacher_assign2class(request):
     teachers = Teacher.objects.all()
     classes = Class.objects.all()
     return render(request, 'teachers/teacher_assign2class.html', {'teachers': teachers, 'classes': classes})
+
+def select_teacher(request):
+    if request.method == 'POST':
+        form = SelectTeacherForm(request.POST)
+        if form.is_valid():
+            teacher = form.cleaned_data['teacher']
+            return redirect('select_class', teacher_id=teacher.pk)
+    else:
+        form = SelectTeacherForm()
+    return render(request, 'teachers/select_teacher.html', {'form': form})
+
+def select_class(request, teacher_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    if request.method == 'POST':
+        form = SelectClassForm(request.POST, teacher=teacher)
+        if form.is_valid():
+            class_id = form.cleaned_data['class_id']
+            return redirect('assign_course', teacher_id=teacher.pk, class_id=class_id.pk)
+    else:
+        form = SelectClassForm(teacher=teacher)
+    return render(request, 'teachers/select_class.html', {'form': form, 'teacher': teacher})
+
+def assign_course(request, teacher_id, class_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    class_instance = get_object_or_404(Class, pk=class_id)
+    
+    if request.method == 'POST':
+        selected_course_ids = request.POST.getlist('courses')
+        selected_courses = Course.objects.filter(pk__in=selected_course_ids)
+        
+        class_course_teacher = ClassCourseTeacher.objects.create(
+            teacher_id=teacher,
+            class_id=class_instance,
+        )
+        
+        class_course_teacher.courses.add(*selected_courses)
+        
+        return redirect('class_course_teacher_list')
+    
+    courses = class_instance.courses.all()
+    
+    return render(request, 'teachers/assign_course.html', {
+        'teacher': teacher,
+        'class': class_instance,
+        'courses': courses,
+    })
+
+def load_classes(request):
+    teacher_id = request.GET.get('teacher_id')
+    classes = Class.objects.filter(teacher__id=teacher_id)
+    return JsonResponse(list(classes.values('id', 'name')), safe=False)
+
+def class_course_teacher_list(request):
+    assignments = ClassCourseTeacher.objects.all()
+    return render(request, 'teachers/class_course_teacher_list.html', {'assignments': assignments})
+
 
 # SECTION: CLASSES 
 def class_list(request):
