@@ -1,0 +1,24 @@
+{% extends "teacher_dashboard/index.html" %}
+
+{% block title %} Exams {% endblock title %}
+
+{% block header %}
+    {% include "teacher_dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "teacher_exams/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Are you sure you want to delete {{ exam.name }}?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <a href="{% url 'teacher_exam_list' %}">Cancel</a>
+{% endblock main %}
+
+{% block footer %}
+    {% include "teacher_dashboard/footer.html" %}
+{% endblock footer %}

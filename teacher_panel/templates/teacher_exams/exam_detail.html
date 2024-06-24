@@ -1,0 +1,23 @@
+{% extends "teacher_dashboard/index.html" %}
+
+{% block title %} Exams {% endblock title %}
+
+{% block header %}
+    {% include "teacher_dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "teacher_exams/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Exam Detail</h1>
+    <p><strong>ID:</strong> {{ exam.exam_id }}</p>
+    <p><strong>Name:</strong> {{ exam.name }}</p>
+    <a href="{% url 'teacher_exam_list' %}">Back to Exam List</a>
+    <a href="{% url 'teacher_exam_update' exam.pk %}">Edit</a>
+{% endblock main %}
+
+{% block footer %}
+    {% include "teacher_dashboard/footer.html" %}
+{% endblock footer %}
