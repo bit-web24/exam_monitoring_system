@@ -184,11 +184,6 @@ def assign_course(request, teacher_id, class_id):
         'courses': courses,
     })
 
-def load_classes(request):
-    teacher_id = request.GET.get('teacher_id')
-    classes = Class.objects.filter(teacher__id=teacher_id)
-    return JsonResponse(list(classes.values('id', 'name')), safe=False)
-
 def class_course_teacher_list(request):
     assignments = ClassCourseTeacher.objects.all()
     return render(request, 'teachers/class_course_teacher_list.html', {'assignments': assignments})
