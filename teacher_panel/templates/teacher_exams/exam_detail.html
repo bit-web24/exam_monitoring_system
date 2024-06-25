@@ -14,8 +14,8 @@
     <h1>Exam Detail</h1>
     <p><strong>ID:</strong> {{ exam.exam_id }}</p>
     <p><strong>Name:</strong> {{ exam.name }}</p>
-    <a href="{% url 'teacher_exam_list' %}">Back to Exam List</a>
-    <a href="{% url 'teacher_exam_update' exam.pk %}">Edit</a>
+    <a href="{% url 'teacher_exam_list' teacher.pk %}">Back to Exam List</a>
+    <a href="{% url 'teacher_exam_update' teacher.pk exam.pk %}">Edit</a>
 {% endblock main %}
 
 {% block footer %}

@@ -5,7 +5,7 @@
 </div>
 <br/>
 <ul class="sections">
-    <li><a href="{% url "teacher_dashboard" %}" class="current_nav">Dashboard</a></li>
-    <li><a href="{% url "teacher_exams" %}">Exams</a></li>
+    <li><a href="{% url "teacher_dashboard" teacher.pk %}" class="current_nav">Dashboard</a></li>
+    <li><a href="{% url "teacher_exams" teacher.pk %}">Exams</a></li>
     {% comment %} <li><a href="{% url "questions" %}">Questions</a></li> {% endcomment %}
 </ul>

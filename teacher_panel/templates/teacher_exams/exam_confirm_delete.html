@@ -16,7 +16,7 @@
         {% csrf_token %}
         <button type="submit">Yes, delete</button>
     </form>
-    <a href="{% url 'teacher_exam_list' %}">Cancel</a>
+    <a href="{% url 'teacher_exam_list' teacher.pk %}">Cancel</a>
 {% endblock main %}
 
 {% block footer %}

@@ -12,13 +12,13 @@
 
 {% block main %}
     <h1>Exam List</h1>
-    <a href="{% url 'teacher_exam_create' %}">Add New Exam</a>
+    <a href="{% url 'teacher_exam_create' teacher.pk %}">Add New Exam</a>
     <ul>
         {% for exam in exams %}
             <li>
-                <a href="{% url 'teacher_exam_detail' exam.pk %}">{{ exam.name }}</a> -
-                <a href="{% url 'teacher_exam_update' exam.pk %}">Edit</a> | 
-                <a href="{% url 'teacher_exam_delete' exam.pk %}">Delete</a>
+                <a href="{% url 'teacher_exam_detail' teacher.pk exam.pk %}">{{ exam.name }}</a> -
+                <a href="{% url 'teacher_exam_update' teacher.pk exam.pk %}">Edit</a> | 
+                <a href="{% url 'teacher_exam_delete' teacher.pk exam.pk %}">Delete</a>
             </li>
         {% endfor %}
     </ul>

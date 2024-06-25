@@ -1,11 +1,11 @@
 <div class="grid-container">
     <div class="grid-item" style="background-color: #7cb342;">
         <h2>All Exams</h2>
-        <p class="item-content"><a href="{% url "teacher_exam_list" %}">list</a></p>
+        <p class="item-content"><a href="{% url "teacher_exam_list" teacher.pk %}">list</a></p>
     </div>
     <div class="grid-item" style="background-color: #42a5f5;">
         <h2>Add Exam</h2>
-        <p class="item-content"><a href="{% url "teacher_exam_create" %}">add</a></p>
+        <p class="item-content"><a href="{% url "teacher_exam_create" teacher.pk %}">add</a></p>
     </div>
     <div class="grid-item" style="background-color: #8d6e63;">
         <h2>Assign Exams to Classes</h2>
