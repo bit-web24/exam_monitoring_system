@@ -1,0 +1,11 @@
+{% load static %}
+<div class="admin_profile">
+    <img src="{% static "images/user.png" %}"/>
+    <h2>{{ student.name }}</h2>
+    <h3 style="color: red; text-align: center;">Student</h3>
+</div>
+<br/>
+<ul class="sections">
+    <li><a href="{% url "student_dashboard" student.pk %}">Dashboard</a></li>
+    <li><a href="{% url "student_exams" student.pk %}" class="current_nav">Exams</a></li>
+</ul>

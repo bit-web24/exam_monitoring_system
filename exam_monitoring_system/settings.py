@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'admin_panel',
     'teacher_panel',
+    'student_panel',
 ]
 
 MIDDLEWARE = [

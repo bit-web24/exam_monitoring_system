@@ -1,0 +1,21 @@
+{% extends "student_dashboard/index.html" %}
+
+{% block title %} Exams {% endblock title %}
+
+{% block header %}
+    {% include "student_dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "student_exams/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+    <h1>Exam Detail</h1>
+    <p><strong>ID:</strong> {{ exam.exam_id }}</p>
+    <p><strong>Name:</strong> {{ exam.name }}</p>
+{% endblock main %}
+
+{% block footer %}
+    {% include "student_dashboard/footer.html" %}
+{% endblock footer %}

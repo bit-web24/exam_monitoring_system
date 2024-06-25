@@ -6,11 +6,19 @@ class Course(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+class Exam(models.Model):
+    exam_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.name
 
 class Class(models.Model):
     class_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     courses = models.ManyToManyField(Course, blank=True)
+    exams = models.ManyToManyField(Exam, blank=True)
 
     def __str__(self) -> str:
         return self.name
@@ -34,13 +42,6 @@ class Teacher(models.Model):
     classes = models.ManyToManyField(Class, blank=True)
     
     def __str__(self):
-        return self.name
-
-class Exam(models.Model):
-    exam_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-
-    def __str__(self) -> str:
         return self.name
 
 class ClassCourseTeacher(models.Model):
