@@ -11,21 +11,21 @@
 {% endblock sidenav %}
 
 {% block main %}
-    <h1>Exam List</h1>
-    <a href="{% url 'exam_create' %}">Add New Exam</a>
-    <ul>
-        {% for exam in exams %}
-            <li>
-                <a href="{% url 'exam_detail' exam.pk %}">{{ exam.name }}</a> -
-                <a href="{% url 'exam_update' exam.pk %}">Edit</a> | 
-                <a href="{% url 'exam_delete' exam.pk %}">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <h1 style="font-family: Arial, sans-serif; color: #333; text-align: center; margin-top: 20px;">Exam List</h1>
+    <div style="max-width: 600px; margin: 0 auto;">
+        <a href="{% url 'exam_create' %}" style="display: block; margin-bottom: 10px; padding: 8px 16px; background-color: #007bff; color: #fff; text-decoration: none; text-align: center; border-radius: 4px;">Add New Exam</a>
+        <ul style="list-style: none; padding: 0;">
+            {% for exam in exams %}
+                <li style="margin-bottom: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <a href="{% url 'exam_detail' exam.pk %}" style="color: #007bff; text-decoration: none;">{{ exam.name }}</a> -
+                    <a href="{% url 'exam_update' exam.pk %}" style="color: #28a745; text-decoration: none;">Edit</a> | 
+                    <a href="{% url 'exam_delete' exam.pk %}" style="color: #dc3545; text-decoration: none;">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock main %}
 
 {% block footer %}
     {% include "dashboard/footer.html" %}
 {% endblock footer %}
-
-

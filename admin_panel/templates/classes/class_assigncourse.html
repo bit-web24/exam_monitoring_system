@@ -11,27 +11,29 @@
 {% endblock sidenav %}
 
 {% block main %}
-    <h1>Assign Courses to Class</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="class_id">Select Class:</label>
-        <select name="class_id" id="class_id">
-            {% for class in classes %}
-                <option value="{{ class.pk }}">{{ class.name }}</option>
+    <div style="max-width: 600px; margin: 20px auto;">
+        <h1 style="font-family: Arial, sans-serif; color: #333; text-align: center; margin-bottom: 20px;">Assign Courses to Class</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="class_id" style="font-family: Arial, sans-serif; color: #333; margin-bottom: 10px; display: block;">Select Class:</label>
+            <select name="class_id" id="class_id" style="padding: 10px; font-family: Arial, sans-serif; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; width: 100%; margin-bottom: 20px;">
+                {% for class in classes %}
+                    <option value="{{ class.pk }}">{{ class.name }}</option>
+                {% endfor %}
+            </select>
+
+            <h2 style="font-family: Arial, sans-serif; color: #333; margin-bottom: 10px;">Select Courses:</h2>
+            {% for course in courses %}
+                <div style="margin-bottom: 10px;">
+                    <input type="checkbox" id="course_{{ course.pk }}" name="courses" value="{{ course.pk }}" style="margin-right: 10px;">
+                    <label for="course_{{ course.pk }}" style="font-family: Arial, sans-serif; color: #333; font-size: 14px;">{{ course.name }}</label>
+                </div>
             {% endfor %}
-        </select>
 
-        <h2>Select Courses:</h2>
-        {% for course in courses %}
-            <div>
-                <input type="checkbox" id="course_{{ course.pk }}" name="courses" value="{{ course.pk }}">
-                <label for="course_{{ course.pk }}">{{ course.name }}</label>
-            </div>
-        {% endfor %}
-
-        <button type="submit">Assign</button>
-    </form>
-    <a href="{% url 'class_list' %}">Back to Class List</a>
+            <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 20px;">Assign</button>
+        </form>
+        <a href="{% url 'class_list' %}" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #6c757d; color: #fff; text-decoration: none; border-radius: 4px;">Back to Class List</a>
+    </div>
 {% endblock main %}
 
 {% block footer %}

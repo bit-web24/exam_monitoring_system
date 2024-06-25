@@ -11,12 +11,16 @@
 {% endblock sidenav %}
 
 {% block main %}
-    <h1>Are you sure you want to delete {{ course.name }}?</h1>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Yes, delete</button>
-    </form>
-    <a href="{% url 'course_list' %}">Cancel</a>
+    <div style="max-width: 600px; margin: 20px auto;">
+        <h1 style="font-family: Arial, sans-serif; color: #333; text-align: center; margin-bottom: 20px;">Are you sure you want to delete {{ course.name }}?</h1>
+        <div style="text-align: center;">
+            <form method="post" style="display: inline-block;">
+                {% csrf_token %}
+                <button type="submit" style="padding: 10px 20px; background-color: #dc3545; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Yes, delete</button>
+            </form>
+            <a href="{% url 'course_list' %}" style="display: inline-block; margin-left: 10px; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Cancel</a>
+        </div>
+    </div>
 {% endblock main %}
 
 {% block footer %}
