@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Choose Role</title>
+</head>
+<body>
+    <h2>Choose Your Role</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label>
+            <input type="radio" name="role" value="admin" required> Admin
+        </label><br>
+        <label>
+            <input type="radio" name="role" value="student" required> Student
+        </label><br>
+        <label>
+            <input type="radio" name="role" value="teacher" required> Teacher
+        </label><br>
+
+        <label for="auth">Continue to:</label>
+        <select name="auth" id="auth">
+            <option value="login">Login</option>
+            <option value="register">Register</option>
+        </select><br>
+
+        <button type="submit">Continue</button>
+    </form>
+</body>
+</html>

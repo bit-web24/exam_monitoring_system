@@ -26,6 +26,7 @@ class Class(models.Model):
 class Student(models.Model):
     student_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
+    password = models.CharField(max_length=100, default="x")
     registration_no = models.CharField(max_length=50)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
@@ -37,6 +38,7 @@ class Student(models.Model):
 class Teacher(models.Model):
     teacher_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
+    password = models.CharField(max_length=100, default="x")
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     classes = models.ManyToManyField(Class, blank=True)
