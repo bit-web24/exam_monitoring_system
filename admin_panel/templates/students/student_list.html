@@ -1,6 +1,8 @@
 {% extends "dashboard/index.html" %}
 
-{% block title %} Students {% endblock title %}
+{% block title %} 
+    Students 
+{% endblock title %}
 
 {% block header %}
     {% include "dashboard/header.html" %}
@@ -11,14 +13,14 @@
 {% endblock sidenav %}
 
 {% block main %}
-    <h1>Student List</h1>
-    <a href="{% url 'student_create' %}">Add New Student</a>
-    <ul>
+    <h1 style="font-family: Arial, sans-serif; color: #333; text-align: center; margin-top: 20px;">Student List</h1>
+    <a href="{% url 'student_create' %}" style="display: inline-block; margin-top: 10px; padding: 10px 15px; background-color: #4CAF50; color: #fff; text-decoration: none; border-radius: 4px; font-family: Arial, sans-serif;">Add New Student</a>
+    <ul style="list-style-type: none; padding: 0;">
         {% for student in students %}
-            <li>
-                <a href="{% url 'student_detail' student.pk %}">{{ student.name }}</a> -
-                <a href="{% url 'student_update' student.pk %}">Edit</a> | 
-                <a href="{% url 'student_delete' student.pk %}">Delete</a>
+            <li style="margin-top: 10px; padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
+                <a href="{% url 'student_detail' student.pk %}" style="text-decoration: none; color: #333; font-family: Arial, sans-serif;">{{ student.name }}</a> -
+                <a href="{% url 'student_update' student.pk %}" style="text-decoration: none; color: #4CAF50; font-family: Arial, sans-serif;">Edit</a> | 
+                <a href="{% url 'student_delete' student.pk %}" style="text-decoration: none; color: #f44336; font-family: Arial, sans-serif;">Delete</a>
             </li>
         {% endfor %}
     </ul>
@@ -27,5 +29,3 @@
 {% block footer %}
     {% include "dashboard/footer.html" %}
 {% endblock footer %}
-
-
