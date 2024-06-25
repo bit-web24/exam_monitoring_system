@@ -65,11 +65,8 @@ def exam_assign2class(request, teacher_id):
         class_id = request.POST.get('class_id')
         exam_id = request.POST.get('exam_id')
         
-        class_instance = get_object_or_404(Class, pk=class_id)
-        exam_instance = get_object_or_404(Exam, pk=exam_id)
-        
-        class_instance.exams.add(exam_instance)
-        class_instance.save()
+        class_instance = Class.objects.get(pk=class_id)
+        class_instance.exams.add(exam_id)
         return redirect('teacher_exam_list', teacher_id=teacher_id)
     
     classes = teacher.classes.all()

@@ -34,3 +34,7 @@
   </form>
   <a href="{% url 'teacher_exam_list' teacher.pk %}">Back to Exam List</a>
 {% endblock main %}
+
+{% block footer %}
+    {% include "teacher_dashboard/footer.html" %}
+{% endblock footer %}
