@@ -5,21 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        #webcam-container {
+            margin-bottom: 20px;
+        }
+        video, canvas {
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        input[type="text"], button[type="submit"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+            width: calc(100% - 22px);
+            box-sizing: border-box;
+        }
+        button[type="submit"], #capture-btn {
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover, #capture-btn:hover {
+            background-color: #45a049;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .register-container {
+            animation: fadeIn 1s ease-in-out;
+        }
+    </style>
 </head>
 <body>
-    <h2>Register</h2>
-    <div id="webcam-container">
-        <video id="webcam" width="320" height="240" autoplay></video>
-        <button id="capture-btn">Capture Image</button>
-        <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+    <div class="register-container">
+        <h2>Register</h2>
+        <div id="webcam-container">
+            <video id="webcam" width="320" height="240" autoplay></video>
+            <img id="captured-image" style="display:none;" />
+            <button id="capture-btn">Capture Image</button>
+            <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+        </div>
+        <form id="register-form" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="image-data" name="image_data">
+            <input type="hidden" name="role" value="student">
+            <input type="text" name="username" placeholder="Username" required>
+            <button type="submit">Register</button>
+        </form>
     </div>
-    <form id="register-form" method="post">
-        {% csrf_token %}
-        <input type="hidden" id="image-data" name="image_data">
-        <input type="hidden" name="role" value="student">
-        <input type="text" name="username" placeholder="Username" required>
-        <button type="submit">Register</button>
-    </form>
 
     <script>
         $(document).ready(function() {
@@ -27,6 +87,7 @@
             const canvas = document.getElementById('canvas');
             const captureBtn = document.getElementById('capture-btn');
             const imageDataInput = document.getElementById('image-data');
+            const capturedImage = document.getElementById('captured-image');
 
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(function(stream) {
@@ -43,10 +104,9 @@
                 const imageData = canvas.toDataURL('image/jpeg');
                 // Store base64 data in hidden input field for form submission
                 imageDataInput.value = imageData;
-                // Optional: Display the captured image (for debugging or UI)
-                // const img = new Image();
-                // img.src = imageData;
-                // document.body.appendChild(img);
+                capturedImage.src = imageData;
+                capturedImage.style.display = 'block';
+                video.style.display = 'none';
             });
         });
     </script>

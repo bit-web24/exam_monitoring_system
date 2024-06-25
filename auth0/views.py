@@ -2,6 +2,10 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from admin_panel.models import Student, Teacher
 import base64
+import numpy as np
+import cv2
+import os
+from deepface import DeepFace
 
 def register_teacher(request):
     if request.method == 'POST':
@@ -82,6 +86,19 @@ def register_student(request):
 
     return render(request, 'register_student.html')
 
+def byte_to_png(photo,studentId,name):
+    directory = f"captured/{studentId}"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    image_bytes = base64.b64decode(photo.split(',')[1])
+    nparr = np.frombuffer(image_bytes, np.uint8)
+    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    face_filename = os.path.join(directory, f"{name}.png")
+    cv2.imwrite(face_filename, img_np)
+    return face_filename
+
 
 def login_student(request):
     if request.method == 'POST':
@@ -94,7 +111,15 @@ def login_student(request):
                 # Assume finding student by matching with stored face_image data (base64 encoded)
                 student = get_object_or_404(Student, name=username)
                 if student:
-                    
+                    stored_face_data = student.face_image
+# change
+                    path1 = byte_to_png(img_data, student.pk, 'login_image')
+                    path2 = byte_to_png(stored_face_data, student.pk, 'stored_image')   
+                    res = DeepFace.verify(img1_path=path1,img2_path=path2)
+                    print("="*20)
+                    print("--------->> ",res)
+# change                    
+
                     return redirect('student_dashboard', student_id=student.pk)
                 else:
                     messages.error(request, 'Face image authentication failed. Student not found.')
