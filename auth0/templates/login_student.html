@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+</head>
+<body>
+    <h2>Student Login</h2>
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="face_image">Capture Your Face Image:</label><br>
+        <video id="video" width="320" height="240" autoplay></video><br>
+        <button id="capture-btn" type="button">Capture</button><br>
+        <canvas id="canvas" style="display:none;"></canvas><br>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="hidden" id="face_image" name="face_image">
+        <input type="submit" value="Login">
+    </form>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('capture-btn');
+        const faceImageInput = document.getElementById('face_image');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(err) {
+                console.log("An error occurred: " + err);
+            });
+
+        captureBtn.addEventListener('click', function() {
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/jpeg');
+            faceImageInput.value = imageData;
+            console.log("Image captured.");
+        });
+    </script>
+</body>
+</html>

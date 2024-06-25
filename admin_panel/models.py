@@ -26,7 +26,7 @@ class Class(models.Model):
 class Student(models.Model):
     student_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    password = models.CharField(max_length=100, default="x")
+    face_image = models.BinaryField(null=True, blank=True)
     registration_no = models.CharField(max_length=50)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
