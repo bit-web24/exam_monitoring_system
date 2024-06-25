@@ -12,13 +12,13 @@
 
 {% block main %}
     <h1>Exam List</h1>
-    <a href="{% url 'teacher_exam_create' teacher.pk %}">Add New Exam</a>
-    <ul>
+    <a href="{% url 'teacher_exam_create' teacher.pk %}" style="display: inline-block; background-color: #007bff; color: #ffffff; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Add New Exam</a>
+    <ul style="list-style-type: none; padding-left: 0;">
         {% for exam in exams %}
-            <li>
-                <a href="{% url 'teacher_exam_detail' teacher.pk exam.pk %}">{{ exam.name }}</a> -
-                <a href="{% url 'teacher_exam_update' teacher.pk exam.pk %}">Edit</a> | 
-                <a href="{% url 'teacher_exam_delete' teacher.pk exam.pk %}">Delete</a>
+            <li style="margin-bottom: 8px;">
+                <a href="{% url 'teacher_exam_detail' teacher.pk exam.pk %}" style="text-decoration: none; color: #333333;">{{ exam.name }}</a> -
+                <a href="{% url 'teacher_exam_update' teacher.pk exam.pk %}" style="color: #007bff; text-decoration: none; margin-right: 8px;">Edit</a> | 
+                <a href="{% url 'teacher_exam_delete' teacher.pk exam.pk %}" style="color: #dc3545; text-decoration: none;">Delete</a>
             </li>
         {% endfor %}
     </ul>
@@ -27,5 +27,3 @@
 {% block footer %}
     {% include "teacher_dashboard/footer.html" %}
 {% endblock footer %}
-
-
