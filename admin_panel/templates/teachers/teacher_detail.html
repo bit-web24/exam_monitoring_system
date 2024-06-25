@@ -11,18 +11,22 @@
 {% endblock sidenav %}
 
 {% block main %}
-    <h1>Teacher Detail</h1>
-    <p><strong>ID:</strong> {{ teacher.teacher_id }}</p>
-    <p><strong>Name:</strong> {{ teacher.name }}</p>
-    <p><strong>Email:</strong> {{ teacher.email }}</p>
-    <p><strong>Phone:</strong> {{ teacher.phone }}</p>
-    <p><strong>Classes Assigned:</strong>
-        {% for class in teacher.classes.all %}
-            <code style="background-color: #9fefef;">{{ class.name }}</code>
-        {% endfor %}
-    </p>
-    <a href="{% url 'teacher_list' %}">Back to Teacher List</a>
-    <a href="{% url 'teacher_update' teacher.pk %}">Edit</a>
+    <h1 style="font-family: Arial, sans-serif; color: #333; text-align: center; margin-top: 20px;">Teacher Detail</h1>
+    <div style="max-width: 600px; margin: 0 auto;">
+        <p style="font-size: 18px; margin-bottom: 10px;"><strong>ID:</strong> {{ teacher.teacher_id }}</p>
+        <p style="font-size: 18px; margin-bottom: 10px;"><strong>Name:</strong> {{ teacher.name }}</p>
+        <p style="font-size: 18px; margin-bottom: 10px;"><strong>Email:</strong> {{ teacher.email }}</p>
+        <p style="font-size: 18px; margin-bottom: 10px;"><strong>Phone:</strong> {{ teacher.phone }}</p>
+        <p style="font-size: 18px; margin-bottom: 10px;"><strong>Classes Assigned:</strong>
+            {% for class in teacher.classes.all %}
+                <span style="display: inline-block; padding: 6px 12px; background-color: #9fefef; margin-right: 10px; margin-bottom: 10px; border-radius: 4px;">{{ class.name }}</span>
+            {% endfor %}
+        </p>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'teacher_list' %}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px; font-family: Arial, sans-serif; font-size: 16px; transition: background-color 0.3s ease;">Back to Teacher List</a>
+            <a href="{% url 'teacher_update' teacher.pk %}" style="display: inline-block; margin-left: 20px; padding: 10px 20px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 4px; font-family: Arial, sans-serif; font-size: 16px; transition: background-color 0.3s ease;">Edit</a>
+        </div>
+    </div>
 {% endblock main %}
 
 {% block footer %}

@@ -1,6 +1,8 @@
 {% extends "dashboard/index.html" %}
 
-{% block title %} Select Teachers {% endblock title %}
+{% block title %} 
+    Select Teachers 
+{% endblock title %}
 
 {% block header %}
     {% include "dashboard/header.html" %}
@@ -11,21 +13,21 @@
 {% endblock sidenav %}
 
 {% block main %}
-    <h1>Class-Course-Teacher Assignments</h1>
-    <table>
+    <h1 style="font-family: Arial, sans-serif; color: #333; text-align: center; margin-top: 20px;">Class-Course-Teacher Assignments</h1>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
         <thead>
-            <tr>
-                <th>Class</th>
-                <th>Course</th>
-                <th>Teacher</th>
+            <tr style="background-color: #f2f2f2;">
+                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Class</th>
+                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Course</th>
+                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Teacher</th>
             </tr>
         </thead>
         <tbody>
             {% for assignment in assignments %}
-            <tr>
-                <td>{{ assignment.class_id.name }}</td>
-                <td>{{ assignment.course_id.name }}</td>
-                <td>{{ assignment.teacher_id.name }}</td>
+            <tr style="border: 1px solid #ddd;">
+                <td style="padding: 12px; border: 1px solid #ddd;">{{ assignment.class_id.name }}</td>
+                <td style="padding: 12px; border: 1px solid #ddd;">{{ assignment.course_id.name }}</td>
+                <td style="padding: 12px; border: 1px solid #ddd;">{{ assignment.teacher_id.name }}</td>
             </tr>
             {% endfor %}
         </tbody>
