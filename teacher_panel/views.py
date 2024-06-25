@@ -1,9 +1,7 @@
-# teacher_panel/views.py
-
 from django.shortcuts import get_object_or_404, redirect, render
 from admin_panel.models import Class, Teacher
-from .forms import ExamForm
-from .models import Exam
+from admin_panel.forms import ExamForm
+from admin_panel.models import Exam
 
 # Dashboard
 def dashboard(request, teacher_id):
