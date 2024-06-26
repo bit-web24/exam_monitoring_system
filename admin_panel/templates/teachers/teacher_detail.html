@@ -83,6 +83,7 @@
                 <span class="assigned-class">{{ class.name }}</span>
             {% endfor %}
         </p>
+        <p class="detail-item"><strong>Password:</strong> {{ teacher.password }}</p>
         <div class="action-buttons">
             <a href="{% url 'teacher_list' %}" class="action-button action-button-primary">Back to Teacher List</a>
             <a href="{% url 'teacher_update' teacher.pk %}" class="action-button action-button-secondary">Edit</a>
