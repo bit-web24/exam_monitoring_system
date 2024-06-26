@@ -2,6 +2,54 @@
 
 {% block title %} Exams {% endblock title %}
 
+{% block style %}
+    <style>
+        .main-heading {
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .detail-container {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-item {
+            margin-bottom: 10px;
+        }
+
+        .detail-item strong {
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-back {
+            background-color: #007bff;
+        }
+
+        .btn-edit {
+            background-color: #28a745;
+            margin-left: 10px;
+        }
+
+        .btn-group {
+            text-align: center;
+        }
+    </style>
+{% endblock style %}
+
 {% block header %}
     {% include "dashboard/header.html" %}
 {% endblock header %}
@@ -11,18 +59,18 @@
 {% endblock sidenav %}
 
 {% block main %}
-    <h1 style="font-family: Arial, sans-serif; color: #333; text-align: center; margin-top: 20px;">Exam Detail</h1>
-    <div style="max-width: 400px; margin: 20px auto; background-color: #f8f9fa; padding: 20px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <p style="margin-bottom: 10px;">
-            <strong style="font-weight: bold;">ID:</strong> {{ exam.exam_id }}
+    <h1 class="main-heading">Exam Detail</h1>
+    <div class="detail-container">
+        <p class="detail-item">
+            <strong>ID:</strong> {{ exam.exam_id }}
         </p>
-        <p style="margin-bottom: 10px;">
-            <strong style="font-weight: bold;">Name:</strong> {{ exam.name }}
+        <p class="detail-item">
+            <strong>Name:</strong> {{ exam.name }}
         </p>
-        <p style="text-align: center;">
-            <a href="{% url 'exam_list' %}" style="padding: 8px 16px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Back to Exam List</a>
-            <a href="{% url 'exam_update' exam.pk %}" style="margin-left: 10px; padding: 8px 16px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 4px;">Edit</a>
-        </p>
+        <div class="btn-group">
+            <a href="{% url 'exam_list' %}" class="btn btn-back">Back to Exam List</a>
+            <a href="{% url 'exam_update' exam.pk %}" class="btn btn-edit">Edit</a>
+        </div>
     </div>
 {% endblock main %}
 

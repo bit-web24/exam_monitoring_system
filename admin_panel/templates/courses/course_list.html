@@ -2,6 +2,61 @@
 
 {% block title %} Courses {% endblock title %}
 
+{% block style %}
+    <style>
+        .course-container {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .course-heading {
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .add-course-link {
+            display: block;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            background-color: #28a745;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .course-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .course-item {
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-link {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .edit-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .delete-link {
+            color: #dc3545;
+            text-decoration: none;
+        }
+    </style>
+{% endblock style %}
+
 {% block header %}
     {% include "dashboard/header.html" %}
 {% endblock header %}
@@ -11,15 +66,15 @@
 {% endblock sidenav %}
 
 {% block main %}
-    <div style="max-width: 600px; margin: 20px auto;">
-        <h1 style="font-family: Arial, sans-serif; color: #333; text-align: center; margin-bottom: 20px;">Course List</h1>
-        <a href="{% url 'course_create' %}" style="display: block; padding: 10px 20px; margin-bottom: 10px; background-color: #28a745; color: #fff; text-decoration: none; text-align: center; border-radius: 4px;">Add New Course</a>
-        <ul style="list-style-type: none; padding: 0;">
+    <div class="course-container">
+        <h1 class="course-heading">Course List</h1>
+        <a href="{% url 'course_create' %}" class="add-course-link">Add New Course</a>
+        <ul class="course-list">
             {% for course in courses %}
-                <li style="margin-bottom: 10px; background-color: #f8f9fa; padding: 10px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <a href="{% url 'course_detail' course.pk %}" style="color: #333; text-decoration: none;">{{ course.name }}</a> -
-                    <a href="{% url 'course_update' course.pk %}" style="color: #007bff; text-decoration: none;">Edit</a> |
-                    <a href="{% url 'course_delete' course.pk %}" style="color: #dc3545; text-decoration: none;">Delete</a>
+                <li class="course-item">
+                    <a href="{% url 'course_detail' course.pk %}" class="course-link">{{ course.name }}</a> -
+                    <a href="{% url 'course_update' course.pk %}" class="edit-link">Edit</a> |
+                    <a href="{% url 'course_delete' course.pk %}" class="delete-link">Delete</a>
                 </li>
             {% endfor %}
         </ul>
