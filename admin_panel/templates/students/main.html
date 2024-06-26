@@ -1,14 +1,20 @@
 <div class="grid-container">
-    <div class="grid-item" style="background-color: #7cb342;">
-        <h2>All Students</h2>
-        <p class="item-content"><a href="{% url "student_list" %}">view</a></p>
-    </div>
-    <div class="grid-item" style="background-color: #42a5f5;">
-        <h2>Add Student</h2>
-        <p class="item-content"><a href="{% url "student_create" %}">add</a></p>
-    </div>
-    <div class="grid-item" style="background-color: #8d6e63;">
-        <h2>Assign students to Class</h2>
-        <p class="item-content"><a href="{% url "student_assign2class" %}">assign to class</a></p>
-    </div>
+    <a href="{% url 'student_list' %}">
+        <div class="grid-item" style="background-color: #7cb342;">
+            <i class="fas fa-user-graduate fa-3x"></i>
+            <h2>All Students</h2>
+        </div>
+    </a>
+    <a href="{% url 'student_create' %}">
+        <div class="grid-item" style="background-color: #42a5f5;">
+            <i class="fas fa-user-plus fa-3x"></i>
+            <h2>Add Student</h2>
+        </div>
+    </a>
+    <a href="{% url 'student_assign2class' %}">
+        <div class="grid-item" style="background-color: #8d6e63;">
+            <i class="fas fa-book-reader fa-3x"></i>
+            <h2>Assign Students to Class</h2>
+        </div>
+    </a>
 </div>

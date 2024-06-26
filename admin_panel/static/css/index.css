@@ -145,6 +145,12 @@ footer {
     border-radius: 10px;
 }
 
+.grid-container a {
+    text-decoration: none; /* Remove underline from the link */
+    display: block; /* Make the link block-level */
+    color: inherit; /* Inherit color from the parent */
+}
+
 /* Style for each grid item */
 .grid-item {
     color: white; /* Text color */
@@ -167,11 +173,12 @@ footer {
 /* Style for the heading inside each grid item */
 .grid-item h2 {
     font-size: 0.7em; /* Font size */
+    text-decoration: none;
 }
 
 .grid-item i {
     font-size: 1.5em;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .grid-item .item-content {

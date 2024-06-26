@@ -1,22 +1,32 @@
 <div class="grid-container">
-    <div class="grid-item" style="background-color: #7cb342;">
-        <h2>All Teachers</h2>
-        <p class="item-content"><a href="{% url "teacher_list" %}">list</a></p>
-    </div>
-    <div class="grid-item" style="background-color: #42a5f5;">
-        <h2>Add Teacher</h2>
-        <p class="item-content"><a href="{% url "teacher_create" %}">add</a></p>
-    </div>
-    <div class="grid-item" style="background-color: #8d6e63;">
-        <h2>Assign Teachers to Classes</h2>
-        <p class="item-content"><a href="{% url "teacher_assign2class" %}">assign to class</a></p>
-    </div>
-    <div class="grid-item" style="background-color: #0d6f63;">
-        <h2>Assign Courses to Teachers</h2>
-        <p class="item-content"><a href="{% url "select_teacher" %}">assign course</a></p>
-    </div>
-    <div class="grid-item" style="background-color: #996a99;">
-        <h2>Class-Course-Teacher Assignments</h2>
-        <p class="item-content"><a href="{% url "class_course_teacher_list" %}">view list</a></p>
-    </div>
+    <a href="{% url 'teacher_list' %}">
+        <div class="grid-item" style="background-color: #7cb342;">
+            <i class="fas fa-chalkboard-teacher fa-3x"></i>
+            <h2>All Teachers</h2>
+        </div>
+    </a>
+    <a href="{% url 'teacher_create' %}">
+        <div class="grid-item" style="background-color: #42a5f5;">
+            <i class="fas fa-user-plus fa-3x"></i>
+            <h2>Add Teacher</h2>
+        </div>
+    </a>
+    <a href="{% url 'teacher_assign2class' %}">
+        <div class="grid-item" style="background-color: #8d6e63;">
+            <i class="fas fa-book-reader fa-3x"></i>
+            <h2>Assign Teachers to Classes</h2>
+        </div>
+    </a>
+    <a href="{% url 'select_teacher' %}">
+        <div class="grid-item" style="background-color: #0d6f63;">
+            <i class="fas fa-book-open fa-3x"></i>
+            <h2>Assign Courses to Teachers</h2>
+        </div>
+    </a>
+    <a href="{% url 'class_course_teacher_list' %}">
+        <div class="grid-item" style="background-color: #996a99;">
+            <i class="fas fa-list-alt fa-3x"></i>
+            <h2>Class-Course-Teacher Assignments</h2>
+        </div>
+    </a>
 </div>
