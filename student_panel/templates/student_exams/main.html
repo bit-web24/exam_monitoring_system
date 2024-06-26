@@ -1,8 +1,9 @@
 <div class="grid-container">
     {% for exam in exams %}
-        <div class="grid-item" style="background-color: #7cb342;">
-            <h2>{{ exam.name }}</h2>
-            <p class="item-content"><a href="{% url "student_exam_detail" student.pk exam.pk %}">show exam details</a></p>
-        </div>
+        <a href="{% url 'student_exam_detail' student.pk exam.pk %}">
+            <div class="grid-item" style="background-color: #7cb342;">
+                <h2>{{ exam.name }}</h2>
+            </div>
+        </a>
     {% endfor %}
 </div>
