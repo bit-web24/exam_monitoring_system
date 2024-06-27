@@ -38,11 +38,6 @@
             margin-bottom: 10px;
             color: #555555;
         }
-        video, img {
-            border: 1px solid #dddddd;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
         input[type="text"], input[type="submit"] {
             padding: 10px;
             margin-bottom: 10px;
@@ -61,19 +56,7 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
-        #capture-btn {
-            padding: 10px 20px;
-            background-color: #008CBA;
-            color: #ffffff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-bottom: 10px;
-        }
-        #capture-btn:hover {
-            background-color: #007bb5;
-        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -91,43 +74,10 @@
         {% endif %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="face_image">Capture Your Face Image:</label>
-            <video id="video" width="320" height="240" autoplay></video>
-            <button id="capture-btn" type="button">Capture</button>
-            <canvas id="canvas" style="display:none;"></canvas>
-            <img id="captured-image" style="display:none;" />
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="hidden" id="face_image" name="face_image">
+            <input type="text" name="student_id" placeholder="Student ID" required>
+            <input type="text" name="class_id" placeholder="Class ID" required>
             <input type="submit" value="Login">
         </form>
     </div>
-
-    <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const captureBtn = document.getElementById('capture-btn');
-        const faceImageInput = document.getElementById('face_image');
-        const capturedImage = document.getElementById('captured-image');
-
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function(stream) {
-                video.srcObject = stream;
-                video.play();
-            })
-            .catch(function(err) {
-                console.log("An error occurred: " + err);
-            });
-
-        captureBtn.addEventListener('click', function() {
-            const context = canvas.getContext('2d');
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageData = canvas.toDataURL('image/jpeg');
-            faceImageInput.value = imageData;
-            capturedImage.src = imageData;
-            capturedImage.style.display = 'block';
-            video.style.display = 'none';
-            console.log("Image captured.");
-        });
-    </script>
 </body>
 </html>

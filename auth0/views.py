@@ -7,25 +7,19 @@ import cv2
 import os
 from deepface import DeepFace
 
-def register_teacher(request):
+def choose_role(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        
-        try:
-            teacher = Teacher.objects.create(
-                name=username,
-                password=password,
-                email="",
-                phone=""
-            )
-            teacher.save()
+        role = request.POST.get('role')
 
-            messages.success(request, 'Account created successfully.')
+        request.session['role'] = role
+        if role == 'admin':
+            return redirect('dashboard')
+        if role == 'teacher':
             return redirect('login_teacher')
-        except Exception as e:
-            messages.error(request, f'Error: {str(e)}')
-    return render(request, 'register_teacher.html')
+        if role == 'student':
+            return redirect('login_student')
+        
+    return render(request, 'choose_role.html')
 
 def login_teacher(request):
     if request.method == 'POST':
@@ -43,90 +37,92 @@ def login_teacher(request):
             messages.error(request, 'Teacher not found.')
     return render(request, 'login_teacher.html')
 
-def choose_role(request):
+
+def login_student(request):
     if request.method == 'POST':
-        role = request.POST.get('role')
-        auth_type = request.POST.get('auth')
+        student_id = request.POST.get('student_id')
+        class_id = request.POST.get('class_id')
 
-        request.session['role'] = role
-
-        if role == 'admin':
-            return redirect('dashboard')
-        
-        if role == 'teacher':
-            if auth_type == 'login':
-                return redirect('login_teacher')
-            elif auth_type == 'register':
-                return redirect('register_teacher')
-        
-        if role == 'student':
-            if auth_type == 'register':
-                return redirect('register_student')
-            
-    return render(request, 'choose_role.html')
-
-
-def register_student(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        image_data = request.POST['image_data']
-        img_data = base64.b64decode(image_data.split(',')[1])
         try:
-            # For simplicity, store the image data directly in the student model
-            student = Student.objects.create(
-                name=username,
-                face_image=img_data  # Store image data (replace with face encoding in production)
-                # In practice, use a face recognition library to process and store face encodings
-            )
+            student_id = int(student_id)
+            # Since class_id is ForeignKey, ensure it's converted correctly or validate it
+            class_id = int(class_id)
+
+            student = get_object_or_404(Student, student_id=student_id)
+            if student.class_id_id != class_id:
+                raise ValueError("Class ID does not match.")
+
+            request.session['student_id'] = student_id
+            request.session['class_id'] = class_id
+
+            if not student.face_image:
+                return redirect('capture_face')
+            else:
+                return redirect('verify_face')
+
+        except (ValueError, TypeError, Student.DoesNotExist) as e:
+            messages.error(request, f'Error: {str(e)}')
+
+    return render(request, 'login_student.html')
+
+
+def capture_face(request):
+    if request.method == 'POST':
+        student_id = request.session.get('student_id')
+        class_id = request.session.get('class_id')
+        face_image = request.POST['face_image']
+        
+        try:
+            image_data = base64.b64decode(face_image.split(',')[1])
+            student = get_object_or_404(Student, student_id=student_id, class_id=class_id)
+            student.face_image = image_data
             student.save()
-            messages.success(request, 'Account created successfully.')
-            return redirect('login_student')
+            messages.success(request, 'Logged in successfully.')
+            return redirect('student_dashboard', student_id=student_id)
         except Exception as e:
             messages.error(request, f'Error: {str(e)}')
 
-    return render(request, 'register_student.html')
+    return render(request, 'capture_face.html')
 
-def byte_to_png(photo,studentId,name):
+def byte_to_png(photo, studentId, name):
     directory = f"captured/{studentId}"
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    image_bytes = base64.b64decode(photo.split(',')[1])
-    nparr = np.frombuffer(image_bytes, np.uint8)
+    # Assuming photo is already bytes-like, no need to decode again
+    nparr = np.frombuffer(photo, np.uint8)
     img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     face_filename = os.path.join(directory, f"{name}.png")
     cv2.imwrite(face_filename, img_np)
     return face_filename
 
-
-def login_student(request):
+def verify_face(request):
     if request.method == 'POST':
         try:
-            face_image_data = request.POST['face_image']
-            username = request.POST['username']
-        
-            if face_image_data and username:
-                img_data = base64.b64decode(face_image_data.split(',')[1])
-                # Assume finding student by matching with stored face_image data (base64 encoded)
-                student = get_object_or_404(Student, name=username)
-                if student:
-                    stored_face_data = student.face_image
-# change
-                    path1 = byte_to_png(img_data, student.pk, 'login_image')
-                    path2 = byte_to_png(stored_face_data, student.pk, 'stored_image')   
-                    res = DeepFace.verify(img1_path=path1,img2_path=path2)
-                    print("="*20)
-                    print("--------->> ",res)
-# change                    
+            face_image = request.POST.get('face_image')
+            student_id = request.session.get('student_id')
+            class_id = request.session.get('class_id')
 
-                    return redirect('student_dashboard', student_id=student.pk)
+            if face_image:
+                student = get_object_or_404(Student, student_id=student_id, class_id_id=class_id)
+
+                img_data = base64.b64decode(face_image.split(',')[1])
+                stored_face_data = student.face_image
+
+                path1 = byte_to_png(img_data, student.pk, 'login_image')
+                path2 = byte_to_png(stored_face_data, student.pk, 'stored_image')
+
+                res = DeepFace.verify(img1_path=path1, img2_path=path2)
+
+                if res['verified']:
+                    return redirect('student_dashboard', student_id=student_id)
                 else:
-                    messages.error(request, 'Face image authentication failed. Student not found.')
+                    messages.error(request, 'Unauthorized user detected.')
             else:
                 messages.error(request, 'Please capture your face image.')
 
         except Exception as e:
             messages.error(request, f'Error: {str(e)}')
 
-    return render(request, 'login_student.html')
+    return render(request, 'verify_face.html')
