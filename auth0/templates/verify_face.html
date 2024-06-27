@@ -121,6 +121,7 @@
             const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             const imageData = canvas.toDataURL('image/jpeg');
+            console.log(imageData);
             faceImageInput.value = imageData;
             capturedImage.src = imageData;
             capturedImage.style.display = 'block';
