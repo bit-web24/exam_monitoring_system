@@ -27,8 +27,6 @@ class Student(models.Model):
     student_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     face_image = models.BinaryField(null=True, blank=True)
-    registration_no = models.CharField(max_length=50)
-    email = models.EmailField()
     phone = models.CharField(max_length=15)
     class_id = models.ForeignKey(Class, null=True, blank=True, on_delete=models.SET_NULL)
 
@@ -38,8 +36,7 @@ class Student(models.Model):
 class Teacher(models.Model):
     teacher_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    password = models.CharField(max_length=100, default="x")
-    email = models.EmailField()
+    password = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     classes = models.ManyToManyField(Class, blank=True)
     

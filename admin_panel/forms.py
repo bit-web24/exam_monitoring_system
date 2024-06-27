@@ -4,12 +4,12 @@ from .models import ClassCourseTeacher, Student, Teacher, Class, Course, Exam
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ['name', 'registration_no', 'email', 'phone', 'class_id',]
+        fields = ['name', 'phone', 'class_id',]
 
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        fields = ['name', 'email', 'phone', 'classes']
+        fields = ['name', 'phone', 'password' , 'classes']
         widgets = {
             'classes': forms.CheckboxSelectMultiple()
         }
