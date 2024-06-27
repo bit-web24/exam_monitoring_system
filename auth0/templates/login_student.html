@@ -69,15 +69,15 @@
 <body>
     <div class="login-container">
         <h2>Student Login</h2>
-        {% if error_message %}
-            <p>{{ error_message }}</p>
-        {% endif %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="text" name="student_id" placeholder="Student ID" required>
             <input type="text" name="class_id" placeholder="Class ID" required>
             <input type="submit" value="Login">
         </form>
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
     </div>
 </body>
 </html>
