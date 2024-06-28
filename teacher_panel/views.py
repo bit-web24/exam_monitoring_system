@@ -15,6 +15,10 @@ def exams(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
     return render(request, 'teacher_exams/dashboard.html', {'teacher': teacher})
 
+def questions(request, teacher_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    return render(request, 'teacher_questions/dashboard.html', {'teacher': teacher})
+
 # SECTION: EXAMS
 def exam_list(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
