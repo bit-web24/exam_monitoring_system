@@ -1,0 +1,81 @@
+<!-- create_question.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Question</title>
+    <style>
+        /* Add your custom CSS here */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        // Add your custom JavaScript here
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionTypeField = document.getElementById('id_question_type');
+            const optionFields = ['option1', 'option2', 'option3', 'option4'];
+
+            questionTypeField.addEventListener('change', function() {
+                const selectedType = this.value;
+                optionFields.forEach(field => {
+                    const fieldElement = document.getElementById(`id_${field}`);
+                    if (selectedType === 'MCQ') {
+                        fieldElement.parentElement.style.display = 'block';
+                    } else {
+                        fieldElement.parentElement.style.display = 'none';
+                    }
+                });
+            });
+
+            questionTypeField.dispatchEvent(new Event('change'));
+        });
+    </script>
+</head>
+<body>
+    <h1>Create Question</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.text.label_tag }} {{ form.text }}
+        </div>
+        <div class="form-group">
+            {{ form.question_type.label_tag }} {{ form.question_type }}
+        </div>
+        <div class="form-group" id="option1-group">
+            {{ form.option1.label_tag }} {{ form.option1 }}
+        </div>
+        <div class="form-group" id="option2-group">
+            {{ form.option2.label_tag }} {{ form.option2 }}
+        </div>
+        <div class="form-group" id="option3-group">
+            {{ form.option3.label_tag }} {{ form.option3 }}
+        </div>
+        <div class="form-group" id="option4-group">
+            {{ form.option4.label_tag }} {{ form.option4 }}
+        </div>
+        <div class="form-group">
+            {{ form.expected_answer.label_tag }} {{ form.expected_answer }}
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

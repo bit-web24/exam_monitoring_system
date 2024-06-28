@@ -1,0 +1,71 @@
+<!-- templates/teacher_questions/question_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+        .question-group {
+            margin-bottom: 30px;
+        }
+        h2 {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            margin-top: 0;
+        }
+        .options {
+            margin-top: 10px;
+        }
+        .option {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Questions for Exam</h1>
+        <p>Teacher: {{ teacher.name }}</p>
+
+        <div class="question-group">
+            <h2>Questions</h2>
+            {% for question in questions %}
+            <div class="card">
+                <h3>{{ forloop.counter }}. {{ question.text }}</h3>
+                <div class="options">
+                    {% if question.option1 %}
+                    <div class="option"><strong>Option 1:</strong> {{ question.option1 }}</div>
+                    {% endif %}
+                    {% if question.option2 %}
+                    <div class="option"><strong>Option 2:</strong> {{ question.option2 }}</div>
+                    {% endif %}
+                    {% if question.option3 %}
+                    <div class="option"><strong>Option 3:</strong> {{ question.option3 }}</div>
+                    {% endif %}
+                    {% if question.option4 %}
+                    <div class="option"><strong>Option 4:</strong> {{ question.option4 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

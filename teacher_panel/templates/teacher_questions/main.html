@@ -1,20 +1,20 @@
 <div class="grid-container">
     <div class="grid-item" style="background-color: #7cb342;">
-        <a href="{% url 'teacher_exam_list' teacher.pk %}">
+        <a href="{% url 'select_exam_to_list_question' teacher.pk %}">
             <i class="fas fa-list fa-3x"></i>
-            <h2>All Exams</h2>
+            <h2>All Questions</h2>
         </a>
     </div>
     <div class="grid-item" style="background-color: #42a5f5;">
-        <a href="{% url 'teacher_exam_create' teacher.pk %}">
+        <a href="{% url 'select_exam_to_create_question' teacher.pk %}">
             <i class="fas fa-plus-circle fa-3x"></i>
-            <h2>Add Exam</h2>
+            <h2>Add Question</h2>
         </a>
     </div>
-    <div class="grid-item" style="background-color: #8d6e63;">
-        <a href="{% url 'teacher_assign_exam2class' teacher.pk %}">
-            <i class="fas fa-clipboard-check fa-3x"></i>
-            <h2>Assign Exams to Classes</h2>
+    <div class="grid-item" style="background-color: #f56c42;">
+        <a>
+            <i class="fas fa-plus-circle fa-3x"></i>
+            <h2>Add Questions in Bulk</h2>
         </a>
     </div>
 </div>

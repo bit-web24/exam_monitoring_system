@@ -28,8 +28,8 @@ class Course(models.Model):
 class Exam(models.Model):
     exam_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    date = models.DateTimeField()
-    duration = models.DurationField()
+    # date = models.DateTimeField()
+    # duration = models.DurationField()
 
     def __str__(self) -> str:
         return self.name
@@ -72,28 +72,32 @@ class ClassCourseTeacher(models.Model):
         return f"{self.class_id.name} - {self.course_id.name} - {self.teacher_id.name}"
 
 class StudentClass(models.Model):
-    student = models.ForeignKey(Student, null=True, on_delete=models.SET_NULL)
-    _class = models.ForeignKey(Class, null=True, on_delete=models.SET_NULL)
+    student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
+    _class = models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
 
 class TeacherCourse(models.Model):
-    teacher = models.ForeignKey(Teacher, null=True, on_delete=models.SET_NULL)
-    course = models.ForeignKey(Course, null=True, on_delete=models.SET_NULL)
+    teacher = models.ForeignKey(Teacher, null=True, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, null=True, on_delete=models.CASCADE)
+
+class TeacherExam(models.Model):
+    teacher = models.ForeignKey(Teacher, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
 
 class ClassCourse(models.Model):
-    _class = models.ForeignKey(Class, null=True, on_delete=models.SET_NULL)
-    course = models.ForeignKey(Course, null=True, on_delete=models.SET_NULL)
+    _class = models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, null=True, on_delete=models.CASCADE)
 
 class CourseExams(models.Model):
-    course = models.ForeignKey(Course, null=True, on_delete=models.SET_NULL)
-    exam = models.ForeignKey(Exam, null=True, on_delete=models.SET_NULL)
+    course = models.ForeignKey(Course, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
 
 class StudentExamQuestionAnswer(models.Model):
-    student = models.ForeignKey(Student, null=True, on_delete=models.SET_NULL)
-    exam = models.ForeignKey(Exam, null=True, on_delete=models.SET_NULL)
-    question = models.ForeignKey(Question, null=True, on_delete=models.SET_NULL)
-    answer = models.ForeignKey(Answer, null=True, on_delete=models.SET_NULL)
+    student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, null=True, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, null=True, on_delete=models.CASCADE)
 
 class ExamQuestion(models.Model):
-    exam = models.ForeignKey(Exam, null=True, on_delete=models.SET_NULL)
-    question = models.ForeignKey(Question, null=True, on_delete=models.SET_NULL)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, null=True, on_delete=models.CASCADE)
 

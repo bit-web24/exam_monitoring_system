@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from admin_panel.models import Class, Teacher
-from admin_panel.forms import ExamForm
-from admin_panel.models import Exam, ClassCourseTeacher
+from admin_panel.forms import ExamForm, QuestionForm
+from admin_panel.models import Exam, ExamQuestion, Question, TeacherExam
+from teacher_panel.forms import SelectExamForm
 
 # Dashboard
 def dashboard(request, teacher_id):
@@ -36,6 +37,8 @@ def exam_create(request, teacher_id):
         form = ExamForm(request.POST)
         if form.is_valid():
             _exam = form.save()
+            teacher_exam = TeacherExam.objects.create(teacher=teacher, exam=_exam)
+            teacher_exam.save()
             return redirect('teacher_exam_detail', teacher_id=teacher_id, pk=_exam.pk)
     else:
         form = ExamForm()
@@ -74,3 +77,71 @@ def exam_assign2class(request, teacher_id):
     classes = teacher.classes.all()
     exams = Exam.objects.all()
     return render(request, 'teacher_exams/exam_assign2class.html', {'teacher': teacher, 'classes': classes, 'exams': exams})
+
+# Questions Section
+def select_exam_to_list_question(request, teacher_id):
+    teacher = get_object_or_404(Teacher, teacher_id=teacher_id)
+    if request.method == 'POST':
+        form = SelectExamForm(request.POST, teacher=teacher)
+        if form.is_valid():
+            selected_exam = form.cleaned_data['exam']
+            return redirect('teacher_question_list', teacher_id=teacher.pk, exam_id=selected_exam.pk)
+    else:
+        form = SelectExamForm(teacher=teacher)
+    return render(request, 'teacher_questions/select_exam.html', {'form': form})
+
+def question_list(request, teacher_id, exam_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    exam_questions = ExamQuestion.objects.filter(exam=exam_id)
+    questions = [exam_question.question for exam_question in exam_questions]
+    return render(request, 'teacher_questions/question_list.html', {'teacher': teacher, 'questions': questions})
+
+def select_exam_to_create_question(request, teacher_id):
+    teacher = get_object_or_404(Teacher, teacher_id=teacher_id)
+    if request.method == 'POST':
+        form = SelectExamForm(request.POST, teacher=teacher)
+        if form.is_valid():
+            selected_exam = form.cleaned_data['exam']
+            return redirect('teacher_question_create', teacher_id=teacher.pk, exam_id=selected_exam.pk)
+    else:
+        form = SelectExamForm(teacher=teacher)
+    return render(request, 'teacher_questions/select_exam.html', {'form': form})
+
+def question_create(request, teacher_id, exam_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    exam = get_object_or_404(Exam, exam_id=exam_id)
+    
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            eq = ExamQuestion.objects.create(exam=exam, question=question)
+            eq.save()
+            return redirect('teacher_question_detail', teacher_id=teacher.pk, question_id=question.pk)
+    form = QuestionForm()
+    return render(request, 'teacher_questions/question_form.html', {'teacher': teacher, 'form': form})
+
+def question_detail(request, teacher_id, question_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    question = Question.objects.get(pk=question_id)
+    return render(request, 'teacher_questions/question_detail.html', {'teacher': teacher, 'question': question})
+
+# def question_update(request, teacher_id, exam_id, question_id):
+#     teacher = get_object_or_404(Teacher, pk=teacher_id)
+#     _exam = get_object_or_404(Exam, pk=pk)
+#     if request.method == 'POST':
+#         form = ExamForm(request.POST, instance=_exam)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('teacher_exam_list', teacher_id=teacher_id)
+#     else:
+#         form = ExamForm(instance=_exam)
+#     return render(request, 'teacher_exams/exam_form.html', {'teacher': teacher, 'form': form})
+
+# def question_delete(request, teacher_id, exam_id, question_id):
+#     teacher = get_object_or_404(Teacher, pk=teacher_id)
+#     _exam = get_object_or_404(Exam, pk=pk)
+#     if request.method == 'POST':
+#         _exam.delete()
+#         return redirect('teacher_exam_list', teacher_id=teacher_id)
+#     return render(request, 'teacher_exams/exam_confirm_delete.html', {'teacher': teacher, 'exam': _exam})

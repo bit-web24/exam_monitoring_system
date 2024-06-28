@@ -1,0 +1,41 @@
+<!-- select_exam.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Exam</title>
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select Exam</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.exam.label_tag }} {{ form.exam }}
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
