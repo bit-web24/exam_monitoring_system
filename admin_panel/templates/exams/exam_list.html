@@ -68,7 +68,6 @@
 {% block main %}
     <h1 class="main-heading">Exam List</h1>
     <div class="container">
-        <a href="{% url 'exam_create' %}" class="add-exam-btn">Add New Exam</a>
         <ul class="exam-list">
             {% for exam in exams %}
                 <li class="exam-item">

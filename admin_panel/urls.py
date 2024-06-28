@@ -48,8 +48,5 @@ urlpatterns = [
 
     # exams
     path('exams/all', views.exam_list, name='exam_list'),
-    path('exams/create/', views.exam_create, name='exam_create'),
-    path('exams/update/<int:pk>/', views.exam_update, name='exam_update'),
-    path('exams/delete/<int:pk>/', views.exam_delete, name='exam_delete'),
     path('exams/detail/<int:pk>/', views.exam_detail, name='exam_detail'),
 ]

@@ -291,31 +291,3 @@ def exam_list(request):
 def exam_detail(request, pk):
     _exam = get_object_or_404(Exam, pk=pk)
     return render(request, 'exams/exam_detail.html', {'exam': _exam})
-
-def exam_create(request):
-    if request.method == 'POST':
-        form = ExamForm(request.POST)
-        if form.is_valid():
-            _exam = form.save()
-            return redirect('exam_detail', pk=_exam.pk)
-    else:
-        form = ExamForm()
-    return render(request, 'exams/exam_form.html', {'form': form})
-
-def exam_update(request, pk):
-    _exam = get_object_or_404(Exam, pk=pk)
-    if request.method == 'POST':
-        form = ExamForm(request.POST, instance=_exam)
-        if form.is_valid():
-            form.save()
-            return redirect('exam_list')
-    else:
-        form = ExamForm(instance=_exam)
-    return render(request, 'exams/exam_form.html', {'form': form})
-
-def exam_delete(request, pk):
-    _exam = get_object_or_404(Exam, pk=pk)
-    if request.method == 'POST':
-        _exam.delete()
-        return redirect('exam_list')
-    return render(request, 'exams/exam_confirm_delete.html', {'exam': _exam})
