@@ -11,12 +11,6 @@ def dashboard(request, teacher_id):
     }
     return render(request, 'teacher_dashboard/dashboard.html', {'teacher': teacher, 'total': total})
 
-def teacher_about(request, teacher_id):
-    teacher = get_object_or_404(Teacher, pk=teacher_id)
-    assignments = ClassCourseTeacher.objects.filter(teacher_id=teacher_id)
-    return render(request, 'teacher_about/dashboard.html', {'teacher': teacher, 'assignments': assignments})
-
-
 def exams(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
     return render(request, 'teacher_exams/dashboard.html', {'teacher': teacher})
