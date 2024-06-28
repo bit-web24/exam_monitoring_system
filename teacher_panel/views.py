@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from admin_panel.models import Class, Teacher
 from admin_panel.forms import ExamForm
-from admin_panel.models import Exam
+from admin_panel.models import Exam, ClassCourseTeacher
 
 # Dashboard
 def dashboard(request, teacher_id):
@@ -10,6 +10,12 @@ def dashboard(request, teacher_id):
         'exams': Exam.objects.count(),
     }
     return render(request, 'teacher_dashboard/dashboard.html', {'teacher': teacher, 'total': total})
+
+def teacher_about(request, teacher_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    assignments = ClassCourseTeacher.objects.filter(teacher_id=teacher_id)
+    return render(request, 'teacher_about/dashboard.html', {'teacher': teacher, 'assignments': assignments})
+
 
 def exams(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
