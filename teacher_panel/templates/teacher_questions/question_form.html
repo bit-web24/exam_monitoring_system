@@ -1,11 +1,9 @@
-<!-- create_question.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Question</title>
+{% extends "teacher_dashboard/index.html" %}
+
+{% block title %} Create Question {% endblock title %}
+
+{% block head %}
     <style>
-        /* Add your custom CSS here */
         .form-group {
             margin-bottom: 15px;
         }
@@ -49,8 +47,17 @@
             questionTypeField.dispatchEvent(new Event('change'));
         });
     </script>
-</head>
-<body>
+{% endblock head %}
+
+{% block header %}
+    {% include "teacher_dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "teacher_questions/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
     <h1>Create Question</h1>
     <form method="post">
         {% csrf_token %}
@@ -77,5 +84,9 @@
         </div>
         <button type="submit">Submit</button>
     </form>
-</body>
-</html>
+{% endblock main %}
+
+{% block footer %}
+    {% include "teacher_dashboard/footer.html" %}
+{% endblock footer %}
+    

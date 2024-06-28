@@ -88,13 +88,14 @@ def select_exam_to_list_question(request, teacher_id):
             return redirect('teacher_question_list', teacher_id=teacher.pk, exam_id=selected_exam.pk)
     else:
         form = SelectExamForm(teacher=teacher)
-    return render(request, 'teacher_questions/select_exam.html', {'form': form})
+    return render(request, 'teacher_questions/select_exam.html', {'form': form, 'teacher': teacher})
 
 def question_list(request, teacher_id, exam_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
+    exam = Exam.objects.get(pk=exam_id)
     exam_questions = ExamQuestion.objects.filter(exam=exam_id)
     questions = [exam_question.question for exam_question in exam_questions]
-    return render(request, 'teacher_questions/question_list.html', {'teacher': teacher, 'questions': questions})
+    return render(request, 'teacher_questions/question_list.html', {'teacher': teacher, 'questions': questions, 'exam': exam})
 
 def select_exam_to_create_question(request, teacher_id):
     teacher = get_object_or_404(Teacher, teacher_id=teacher_id)
@@ -105,7 +106,7 @@ def select_exam_to_create_question(request, teacher_id):
             return redirect('teacher_question_create', teacher_id=teacher.pk, exam_id=selected_exam.pk)
     else:
         form = SelectExamForm(teacher=teacher)
-    return render(request, 'teacher_questions/select_exam.html', {'form': form})
+    return render(request, 'teacher_questions/select_exam.html', {'form': form, 'teacher': teacher})
 
 def question_create(request, teacher_id, exam_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)

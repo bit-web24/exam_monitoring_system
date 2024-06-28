@@ -1,82 +1,93 @@
-<!-- templates/teacher_questions/question_detail.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Question Details</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-        }
-        .container {
-            width: 60%;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .card {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .question-type {
-            font-weight: bold;
-            color: #555;
-        }
-        .option {
-            margin-top: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fff;
-        }
-        .expected-answer {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #4CAF50;
-            border-radius: 5px;
-            background-color: #E8F5E9;
-        }
-        .back-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .back-button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Question Details</h1>
-        <div class="card">
-            <h2>{{ question.text }}</h2>
-            <p class="question-type">Type: {{ question.get_question_type_display }}</p>
-            {% if question.option1 %}
-            <div class="option"><strong>Option 1:</strong> {{ question.option1 }}</div>
-            {% endif %}
-            {% if question.option2 %}
-            <div class="option"><strong>Option 2:</strong> {{ question.option2 }}</div>
-            {% endif %}
-            {% if question.option3 %}
-            <div class="option"><strong>Option 3:</strong> {{ question.option3 }}</div>
-            {% endif %}
-            {% if question.option4 %}
-            <div class="option"><strong>Option 4:</strong> {{ question.option4 }}</div>
-            {% endif %}
-            <div class="expected-answer"><strong>Expected Answer:</strong> {{ question.expected_answer }}</div>
-        </div>
+{% extends "teacher_dashboard/index.html" %}
+
+{% block title %} Question Details {% endblock title %}
+
+{% block head %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+    }
+    .container {
+        width: 60%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .card {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .container h1 {
+        text-align: center;
+        color: #333;
+    }
+    .question-type {
+        font-weight: bold;
+        color: #555;
+    }
+    .option {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+    .expected-answer {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #4CAF50;
+        border-radius: 5px;
+        background-color: #E8F5E9;
+    }
+    .back-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .back-button:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock head %}
+
+{% block header %}
+    {% include "teacher_dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "teacher_questions/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
+<div class="container">
+    <h1>Question Details</h1>
+    <div class="card">
+        <h2>{{ question.text }}</h2>
+        <p class="question-type">Type: {{ question.get_question_type_display }}</p>
+        {% if question.option1 %}
+        <div class="option"><strong>Option 1:</strong> {{ question.option1 }}</div>
+        {% endif %}
+        {% if question.option2 %}
+        <div class="option"><strong>Option 2:</strong> {{ question.option2 }}</div>
+        {% endif %}
+        {% if question.option3 %}
+        <div class="option"><strong>Option 3:</strong> {{ question.option3 }}</div>
+        {% endif %}
+        {% if question.option4 %}
+        <div class="option"><strong>Option 4:</strong> {{ question.option4 }}</div>
+        {% endif %}
+        <div class="expected-answer"><strong>Expected Answer:</strong> {{ question.expected_answer }}</div>
     </div>
-</body>
-</html>
+</div>
+{% endblock main %}
+
+{% block footer %}
+    {% include "teacher_dashboard/footer.html" %}
+{% endblock footer %}
