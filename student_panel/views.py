@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from admin_panel.models import Class, Exam, Student, StudentExamAttempted, ExamQuestion, Question, StudentExamQuestionAnswer
+from admin_panel.models import Class, Exam, Student, StudentExamAttempted, ExamQuestion, Question, StudentExamQuestionAnswer, Answer
 
 def student_dashboard(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
@@ -43,28 +43,39 @@ def student_exam_start(request, student_id, exam_id):
         'exam': exam
     })
 
+
 def student_exam_submit(request, student_id, exam_id):
     student = get_object_or_404(Student, pk=student_id)
     exam = get_object_or_404(Exam, pk=exam_id)
 
-    if request.method == 'POST':
-        # Create a StudentExamAttempted entry
-        sea = StudentExamAttempted.objects.create(student=student, exam=exam, attempted=True)
-        
-        # Assuming the form data includes answers in the format {'question_id': 'answer'}
-        for question_id, answer in request.POST.items():
-            # Exclude non-question POST items like CSRF token, submit button, etc.
-            if question_id.startswith('question_'):
-                question_id = question_id.split('_')[1]
-                question = get_object_or_404(Question, pk=question_id)
-                StudentExamQuestionAnswer.objects.create(
-                    student=student,
-                    exam=exam,
-                    question=question,
-                    answer=answer
-                )
-        
-        return redirect('student_exams', student_id=student.pk)
+    StudentExamAttempted.objects.create(student=student, exam=exam, attempted=True).save()
     
-    # If GET request, possibly return a form or a message indicating incorrect access method
-    return render(request, 'your_template_name.html', {'student': student, 'exam': exam})
+    for key, value in request.POST.items():
+        if key.startswith('question_'):
+            question_id = key.split('_')[1]
+            question = get_object_or_404(Question, pk=question_id)
+            
+            answer = None
+            if question.question_type == 'MCQ':
+                match value:
+                    case 'option1':
+                        answer = Answer.objects.create(option=question.option1)
+                    case 'option2':
+                        answer = Answer.objects.create(option=question.option2)
+                    case 'option3':
+                        answer = Answer.objects.create(option=question.option3)
+                    case 'option4':
+                        answer = Answer.objects.create(option=question.option4)
+                    case _:
+                        pass
+            elif question.question_type == 'TF':
+                answer = Answer.objects.create(truth=(value == 'True'))
+            
+            StudentExamQuestionAnswer.objects.create(
+                student=student,
+                exam=exam,
+                question=question,
+                answer=answer
+            ).save()
+    
+    return redirect('student_exams', student_id=student.pk)
