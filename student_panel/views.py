@@ -89,3 +89,50 @@ def student_results(request, student_id):
         'student': student,
         'exams': exams,
     })
+
+def student_result_view(request, student_id, exam_id):
+    student = get_object_or_404(Student, student_id=student_id)
+    exam = get_object_or_404(Exam, exam_id=exam_id)
+    all_student_exam_Q_and_A = StudentExamQuestionAnswer.objects.filter(student=student, exam=exam)
+    questions = []
+
+    total_correct, total_wrong, total_attempted = 0, 0, 0
+    for student_exam_Q_and_A in all_student_exam_Q_and_A:
+        qa = student_exam_Q_and_A
+        q = qa.question
+        a = qa.answer
+        
+        if q.question_type == 'MCQ':
+            if q.correct_option == a.option:
+                total_correct += 1
+            else:
+                total_wrong += 1
+            questions.append({
+                'text': q.text,
+                'correct_option': q.correct_option,
+                'selected_option': a.option,
+            })
+        else:
+            if q.expected_truth_value == a.truth:
+                total_correct += 1
+            else:
+                total_wrong += 1
+            questions.append({
+                'text': q.text,
+                'correct_option': q.expected_truth_value,
+                'selected_option': a.truth,
+            })
+        total_attempted += 1
+
+    percentage_score = (total_correct/total_attempted) * 100
+
+    context = {
+        'student': student,
+        'exam': exam,
+        'total_correct': total_correct,
+        'total_wrong': total_wrong,
+        'percentage_score': percentage_score,
+        'questions': questions,
+    }
+    
+    return render(request, 'student_results/result_detail.html', context)
