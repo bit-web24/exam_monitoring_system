@@ -30,7 +30,23 @@ class CourseForm(forms.ModelForm):
 class ExamForm(forms.ModelForm):
     class Meta:
         model = Exam
-        fields = ['name']
+        fields = ['name', 'description', 'date', 'duration']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),  # Example of using DateInput widget
+        }
+        labels = {
+            'name': 'Exam Name',   # Example of custom label
+        }
+        help_texts = {
+            'duration': 'Enter exam duration in minutes.',  # Example of help text
+        }
+
+    def clean_duration(self):
+        duration = self.cleaned_data['duration']
+        if not duration:
+            raise forms.ValidationError("Duration must be a positive number.")
+        return duration
+
 
 class QuestionForm(forms.ModelForm):
     class Meta:

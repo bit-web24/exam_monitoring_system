@@ -99,7 +99,7 @@ class StudentExamQuestionAnswer(models.Model):
     question = models.ForeignKey(Question, null=True, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, null=True, on_delete=models.CASCADE)
 
-class StudentExaxAttempted(models.Model):
+class StudentExamAttempted(models.Model):
     student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
     exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
     attempted = models.BooleanField()

@@ -70,12 +70,12 @@
         <p><strong>Name:</strong> {{ exam.name }}</p>
         <p><strong><i class="fas fa-calendar-alt icon"></i>Date:</strong> {{ exam.date }}</p>
         <p><strong><i class="fas fa-clock icon"></i>Duration:</strong> {{ exam.duration }}</p>
-        <p><strong><i class="fas fa-question icon"></i>Number of Questions:</strong> {{ exam.questions.count }}</p>
+        <p><strong><i class="fas fa-question icon"></i>Number of Questions:</strong> {{ total_questions }}</p>
         <p><strong><i class="fas fa-align-left icon"></i>Description:</strong> {{ exam.description }}</p>
         {% if exam.date|date:"U" < "now"|date:"U" %}
             <p class="expired-status">This exam has expired.</p>
         {% else %}
-            <a class="start-button">Start Exam</a>
+            <a href="{% url 'student_exam_start' student.pk exam.pk %}" class="start-button">Start Exam</a>
         {% endif %}
     </div>
     <a href="{% url 'student_exams' student.pk %}" class="back-button">Back to Exams</a>

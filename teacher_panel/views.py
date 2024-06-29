@@ -54,7 +54,7 @@ def exam_update(request, teacher_id, pk):
             return redirect('teacher_exam_list', teacher_id=teacher_id)
     else:
         form = ExamForm(instance=_exam)
-    return render(request, 'teacher_exams/exam_form.html', {'teacher': teacher, 'form': form})
+    return render(request, 'teacher_exams/exam_form.html', {'teacher': teacher, 'form': form, 'exam': _exam})
 
 def exam_delete(request, teacher_id, pk):
     teacher = get_object_or_404(Teacher, pk=teacher_id)

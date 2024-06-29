@@ -13,8 +13,10 @@
 {% block main %}
     <h1 style="margin-bottom: 20px;">Exam Detail</h1>
     <div style="max-width: 600px; margin-bottom: 20px;">
-        <p style="margin-bottom: 10px;"><strong>ID:</strong> {{ exam.exam_id }}</p>
         <p style="margin-bottom: 10px;"><strong>Name:</strong> {{ exam.name }}</p>
+        <p style="margin-bottom: 10px;"><strong>Description:</strong> {{ exam.description }}</p>
+        <p style="margin-bottom: 10px;"><strong>Date:</strong> {{ exam.date }}</p>
+        <p style="margin-bottom: 10px;"><strong>Duration:</strong> {{ exam.duration }}</p>
     </div>
     <a href="{% url 'teacher_exam_list' teacher.pk %}" style="display: block; margin-bottom: 10px; color: #007bff; text-decoration: none;">Back to Exam List</a>
     <a href="{% url 'teacher_exam_update' teacher.pk exam.pk %}" style="display: inline-block; background-color: #007bff; color: #ffffff; padding: 8px 16px; border: none; border-radius: 4px; text-decoration: none; cursor: pointer;">Edit</a>
