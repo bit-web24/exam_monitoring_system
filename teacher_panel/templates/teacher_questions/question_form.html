@@ -1,9 +1,10 @@
-<!-- templates/teacher_questions/question_form.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Question</title>
+{% extends "teacher_dashboard/index.html" %}
+
+{% block title %}
+    {% if update %} Update Question {% else %} Create Question {% endif %}
+{% endblock title %}
+
+{% block head %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,10 +59,19 @@
             toggleFields();
         });
     </script>
-</head>
-<body>
+{% endblock head %}
+
+{% block header %}
+    {% include "teacher_dashboard/header.html" %}
+{% endblock header %}
+
+{% block sidenav %}
+    {% include "teacher_questions/sidenav.html" %}
+{% endblock sidenav %}
+
+{% block main %}
     <div class="container">
-        <h1>Create Question</h1>
+        <h1>{% if update %}Update{% else %}Create{% endif %} Question</h1>
         <form method="post">
             {% csrf_token %}
             {{ form.non_field_errors }}
@@ -102,8 +112,11 @@
                 {{ form.expected_truth_value }}
             </div>
             
-            <button type="submit">Save</button>
+            <button type="submit">{% if update %}Update{% else %}Save{% endif %}</button>
         </form>
     </div>
-</body>
-</html>
+{% endblock main %}
+
+{% block footer %}
+    {% include "teacher_dashboard/footer.html" %}
+{% endblock footer %}

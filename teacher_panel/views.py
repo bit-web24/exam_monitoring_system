@@ -127,22 +127,33 @@ def question_detail(request, teacher_id, question_id):
     question = Question.objects.get(pk=question_id)
     return render(request, 'teacher_questions/question_detail.html', {'teacher': teacher, 'question': question})
 
-# def question_update(request, teacher_id, exam_id, question_id):
-#     teacher = get_object_or_404(Teacher, pk=teacher_id)
-#     _exam = get_object_or_404(Exam, pk=pk)
-#     if request.method == 'POST':
-#         form = ExamForm(request.POST, instance=_exam)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('teacher_exam_list', teacher_id=teacher_id)
-#     else:
-#         form = ExamForm(instance=_exam)
-#     return render(request, 'teacher_exams/exam_form.html', {'teacher': teacher, 'form': form})
+def question_update(request, teacher_id, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    if request.method == 'POST':
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            form.save()
+            return redirect('teacher_question_detail', teacher_id=teacher.pk, question_id=question.pk)
+    else:
+        form = QuestionForm(instance=question)
+    return render(request, 'teacher_questions/question_form.html', {'teacher': teacher, 'form': form, 'question': question, 'update': True})
 
-# def question_delete(request, teacher_id, exam_id, question_id):
-#     teacher = get_object_or_404(Teacher, pk=teacher_id)
-#     _exam = get_object_or_404(Exam, pk=pk)
-#     if request.method == 'POST':
-#         _exam.delete()
-#         return redirect('teacher_exam_list', teacher_id=teacher_id)
-#     return render(request, 'teacher_exams/exam_confirm_delete.html', {'teacher': teacher, 'exam': _exam})
+def question_delete(request, teacher_id, question_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    question = get_object_or_404(Question, pk=question_id)
+
+    teacher_exams = TeacherExam.objects.filter(teacher=teacher)
+    exam = None
+
+    for teacher_exam in teacher_exams:
+        tmp_exam = teacher_exam.exam
+        if ExamQuestion.objects.filter(exam=tmp_exam, question=question).exists():
+            exam = tmp_exam
+            break
+
+    if request.method == 'POST':
+        question.delete()
+        return redirect('teacher_question_list', teacher_id=teacher.pk, exam_id=exam.pk)
+
+    return render(request, 'teacher_questions/question_confirm_delete.html', {'teacher': teacher, 'question': question, 'exam': exam})
