@@ -5,8 +5,8 @@ register = template.Library()
 
 @register.filter
 def is_past_date(date):
-    return date < timezone.now()
+    return date.date() < timezone.now().date()
 
 @register.filter
 def is_future_date(date):
-    return date > timezone.now()
+    return date.date() > timezone.now().date()

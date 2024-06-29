@@ -80,3 +80,12 @@ def student_exam_submit(request, student_id, exam_id):
             ).save()
     
     return redirect('student_exams', student_id=student.pk)
+
+def student_results(request, student_id):
+    student = get_object_or_404(Student, student_id=student_id)
+    student_exam_attempted_s = StudentExamAttempted.objects.filter(student=student, attempted=True)
+    exams = [student_exam_attempted.exam for student_exam_attempted in student_exam_attempted_s]
+    return render(request, 'student_results/dashboard.html', {
+        'student': student,
+        'exams': exams,
+    })

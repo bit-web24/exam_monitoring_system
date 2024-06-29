@@ -1,0 +1,10 @@
+<div class="grid-container">
+    {% for exam in exams %}
+        <a>
+            <div class="grid-item" style="background-color: #7cb342;">
+                <i class="fas fa-graduation-cap fa-3x"></i>
+                <h2>{{ exam.name }}</h2>
+            </div>
+        </a>
+    {% endfor %}
+</div>

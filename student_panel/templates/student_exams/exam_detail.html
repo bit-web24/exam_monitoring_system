@@ -76,7 +76,7 @@
         {% if exam.date|is_past_date %}
             <p class="expired-status">This exam has expired.</p>
         {% elif exam.date|is_future_date %}
-            <p class="expired-status">This exam can only be taken on {{ exam.date }}.</p>
+            <p class="expired-status">This exam can only be taken on {{ exam.date.date }}.</p>
         {% elif attempted %}
             <p class="expired-status">You have Taken this Exam.</p>
         {% else %}
