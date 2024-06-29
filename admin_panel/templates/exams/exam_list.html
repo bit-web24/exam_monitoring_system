@@ -72,8 +72,6 @@
             {% for exam in exams %}
                 <li class="exam-item">
                     <a href="{% url 'exam_detail' exam.pk %}" class="exam-link">{{ exam.name }}</a> -
-                    <a href="{% url 'exam_update' exam.pk %}" class="edit-link">Edit</a> | 
-                    <a href="{% url 'exam_delete' exam.pk %}" class="delete-link">Delete</a>
                 </li>
             {% endfor %}
         </ul>
