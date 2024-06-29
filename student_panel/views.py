@@ -29,7 +29,8 @@ def student_exam_detail(request, student_id, exam_id):
     _class = get_object_or_404(Class, pk=student.class_id.pk)
     exam = get_object_or_404(_class.exams, pk=exam_id)
     total_questions = ExamQuestion.objects.filter(exam=exam).count()
-    return render(request, 'student_exams/exam_detail.html', {'student': student, 'class': _class, 'exam': exam, 'total_questions': total_questions})
+    attempted = True if StudentExamAttempted.objects.filter(exam=exam, student=student).exists() else False
+    return render(request, 'student_exams/exam_detail.html', {'student': student, 'class': _class, 'exam': exam, 'total_questions': total_questions, 'attempted': attempted})
 
 def student_exam_start(request, student_id, exam_id):
     student = get_object_or_404(Student, pk=student_id)
