@@ -29,8 +29,9 @@ class Course(models.Model):
 class Exam(models.Model):
     exam_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    # date = models.DateTimeField()
-    # duration = models.DurationField()
+    description = models.TextField(blank=True)
+    date = models.DateTimeField(null=True)
+    duration = models.DurationField(null=True)
 
     def __str__(self) -> str:
         return self.name
@@ -97,6 +98,11 @@ class StudentExamQuestionAnswer(models.Model):
     exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, null=True, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, null=True, on_delete=models.CASCADE)
+
+class StudentExaxAttempted(models.Model):
+    student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
+    attempted = models.BooleanField()
 
 class ExamQuestion(models.Model):
     exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
