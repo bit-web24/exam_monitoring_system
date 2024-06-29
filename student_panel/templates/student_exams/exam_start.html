@@ -85,16 +85,17 @@
 <div class="container">
     <h1>Take Exam</h1>
     <div class="timer">Time Remaining: <span id="time">00:00</span></div>
-    <form id="exam-form" method="post" action="{% url 'submit_exam' student.pk exam.pk %}">
+    <form id="exam-form" method="post" action="{% url 'student_exam_submit' student.pk exam.pk %}">
         {% csrf_token %}
         <div class="exam-questions">
-            {% for question in questions.all %}
+            {% for question in questions %}
                 <div class="question">
                     <p><strong>{{ question.text }}</strong></p>
                     {% if question.question_type == 'MCQ' %}
-                        {% for option in question.get_options %}
-                            <label><input type="radio" name="question_{{ question.pk }}" value="{{ option }}"> {{ option }}</label><br>
-                        {% endfor %}
+                            <label><input type="radio" name="question_{{ question.pk }}" value="option1"> {{ question.option1 }}</label><br>
+                            <label><input type="radio" name="question_{{ question.pk }}" value="option2"> {{ question.option2 }}</label><br>
+                            <label><input type="radio" name="question_{{ question.pk }}" value="option3"> {{ question.option3 }}</label><br>
+                            <label><input type="radio" name="question_{{ question.pk }}" value="option4"> {{ question.option4 }}</label><br>
                     {% elif question.question_type == 'TF' %}
                         <label><input type="radio" name="question_{{ question.pk }}" value="True"> True</label><br>
                         <label><input type="radio" name="question_{{ question.pk }}" value="False"> False</label><br>
