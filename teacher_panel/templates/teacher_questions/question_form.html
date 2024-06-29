@@ -1,92 +1,109 @@
-{% extends "teacher_dashboard/index.html" %}
-
-{% block title %} Create Question {% endblock title %}
-
-{% block head %}
+<!-- templates/teacher_questions/question_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Question</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
         .form-group {
             margin-bottom: 15px;
         }
-        label {
+        .form-group label {
             display: block;
+            margin-bottom: 5px;
         }
-        input, textarea {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 8px;
             box-sizing: border-box;
         }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
+        .form-group.hidden {
+            display: none;
         }
     </style>
     <script>
-        // Add your custom JavaScript here
-        document.addEventListener('DOMContentLoaded', function() {
-            const questionTypeField = document.getElementById('id_question_type');
-            const optionFields = ['option1', 'option2', 'option3', 'option4'];
+        function toggleFields() {
+            var questionType = document.querySelector('input[name="question_type"]:checked').value;
+            var mcqFields = document.querySelectorAll('.mcq-fields');
+            var tfFields = document.querySelector('.tf-field');
 
-            questionTypeField.addEventListener('change', function() {
-                const selectedType = this.value;
-                optionFields.forEach(field => {
-                    const fieldElement = document.getElementById(`id_${field}`);
-                    if (selectedType === 'MCQ') {
-                        fieldElement.parentElement.style.display = 'block';
-                    } else {
-                        fieldElement.parentElement.style.display = 'none';
-                    }
+            if (questionType === 'MCQ') {
+                mcqFields.forEach(function(field) {
+                    field.classList.remove('hidden');
                 });
+                tfFields.classList.add('hidden');
+            } else if (questionType === 'TF') {
+                mcqFields.forEach(function(field) {
+                    field.classList.add('hidden');
+                });
+                tfFields.classList.remove('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var questionTypeFields = document.querySelectorAll('input[name="question_type"]');
+            questionTypeFields.forEach(function(field) {
+                field.addEventListener('change', toggleFields);
             });
 
-            questionTypeField.dispatchEvent(new Event('change'));
+            // Initialize fields based on the current selection
+            toggleFields();
         });
     </script>
-{% endblock head %}
-
-{% block header %}
-    {% include "teacher_dashboard/header.html" %}
-{% endblock header %}
-
-{% block sidenav %}
-    {% include "teacher_questions/sidenav.html" %}
-{% endblock sidenav %}
-
-{% block main %}
-    <h1>Create Question</h1>
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            {{ form.text.label_tag }} {{ form.text }}
-        </div>
-        <div class="form-group">
-            {{ form.question_type.label_tag }} {{ form.question_type }}
-        </div>
-        <div class="form-group" id="option1-group">
-            {{ form.option1.label_tag }} {{ form.option1 }}
-        </div>
-        <div class="form-group" id="option2-group">
-            {{ form.option2.label_tag }} {{ form.option2 }}
-        </div>
-        <div class="form-group" id="option3-group">
-            {{ form.option3.label_tag }} {{ form.option3 }}
-        </div>
-        <div class="form-group" id="option4-group">
-            {{ form.option4.label_tag }} {{ form.option4 }}
-        </div>
-        <div class="form-group">
-            {{ form.expected_answer.label_tag }} {{ form.expected_answer }}
-        </div>
-        <button type="submit">Submit</button>
-    </form>
-{% endblock main %}
-
-{% block footer %}
-    {% include "teacher_dashboard/footer.html" %}
-{% endblock footer %}
-    
+</head>
+<body>
+    <div class="container">
+        <h1>Create Question</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            
+            <div class="form-group">
+                <label for="id_text">Question Text</label>
+                {{ form.text }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_question_type">Question Type</label>
+                {{ form.question_type }}
+            </div>
+            
+            <div class="form-group mcq-fields hidden">
+                <label for="id_option1">Option 1</label>
+                {{ form.option1 }}
+            </div>
+            <div class="form-group mcq-fields hidden">
+                <label for="id_option2">Option 2</label>
+                {{ form.option2 }}
+            </div>
+            <div class="form-group mcq-fields hidden">
+                <label for="id_option3">Option 3</label>
+                {{ form.option3 }}
+            </div>
+            <div class="form-group mcq-fields hidden">
+                <label for="id_option4">Option 4</label>
+                {{ form.option4 }}
+            </div>
+            <div class="form-group mcq-fields hidden">
+                <label for="id_expected_answer">Correct Option</label>
+                {{ form.correct_option }}
+            </div>
+            
+            <div class="form-group tf-field hidden">
+                <label for="id_expected_truth_ans">Expected Truth Value</label>
+                {{ form.expected_truth_value }}
+            </div>
+            
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</body>
+</html>

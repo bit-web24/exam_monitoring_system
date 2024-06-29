@@ -12,7 +12,8 @@ class Question(models.Model):
     option2 = models.CharField(max_length=200, blank=True, null=True)
     option3 = models.CharField(max_length=200, blank=True, null=True)
     option4 = models.CharField(max_length=200, blank=True, null=True)
-    expected_answer = models.CharField(max_length=200)
+    correct_option = models.CharField(max_length=200, blank=True, null=True)
+    expected_truth_value = models.BooleanField(blank=True, null=True)
 
 class Answer(models.Model):
     option = models.CharField(max_length=200, null=True)

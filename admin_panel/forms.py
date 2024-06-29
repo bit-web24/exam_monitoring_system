@@ -35,13 +35,15 @@ class ExamForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['text', 'question_type', 'option1', 'option2', 'option3', 'option4', 'expected_answer']
+        fields = ['text', 'question_type', 'option1', 'option2', 'option3', 'option4', 'correct_option', 'expected_truth_value']
 
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
         self.fields['question_type'].widget = forms.RadioSelect(choices=Question.QUESTION_TYPE_CHOICES)
-        for field in ['option1', 'option2', 'option3', 'option4']:
+        for field in ['option1', 'option2', 'option3', 'option4', 'correct_option', 'expected_truth_value']:
             self.fields[field].required = False
+        
+        self.fields['expected_truth_value'].widget = forms.Select(choices=[(True, 'True'), (False, 'False')])
 
 class SelectTeacherForm(forms.Form):
     teacher = forms.ModelChoiceField(queryset=Teacher.objects.all())

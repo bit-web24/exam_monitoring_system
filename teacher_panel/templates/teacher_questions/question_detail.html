@@ -42,6 +42,13 @@
         border-radius: 5px;
         background-color: #E8F5E9;
     }
+    .expected-truth-answer {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #4CAF50;
+        border-radius: 5px;
+        background-color: #E8F5E9;
+    }
     .back-button {
         display: inline-block;
         margin-top: 20px;
@@ -71,19 +78,24 @@
     <div class="card">
         <h2>{{ question.text }}</h2>
         <p class="question-type">Type: {{ question.get_question_type_display }}</p>
-        {% if question.option1 %}
-        <div class="option"><strong>Option 1:</strong> {{ question.option1 }}</div>
+        
+        {% if question.question_type == 'MCQ' %}
+            {% if question.option1 %}
+            <div class="option"><strong>Option 1:</strong> {{ question.option1 }}</div>
+            {% endif %}
+            {% if question.option2 %}
+            <div class="option"><strong>Option 2:</strong> {{ question.option2 }}</div>
+            {% endif %}
+            {% if question.option3 %}
+            <div class="option"><strong>Option 3:</strong> {{ question.option3 }}</div>
+            {% endif %}
+            {% if question.option4 %}
+            <div class="option"><strong>Option 4:</strong> {{ question.option4 }}</div>
+            {% endif %}
+            <div class="expected-answer"><strong>Expected Answer:</strong> {{ question.correct_option }}</div>
+        {% elif question.question_type == 'TF' %}
+            <div class="expected-truth-answer"><strong>Expected Answer:</strong> {{ question.expected_truth_value|yesno:"True,False" }}</div>
         {% endif %}
-        {% if question.option2 %}
-        <div class="option"><strong>Option 2:</strong> {{ question.option2 }}</div>
-        {% endif %}
-        {% if question.option3 %}
-        <div class="option"><strong>Option 3:</strong> {{ question.option3 }}</div>
-        {% endif %}
-        {% if question.option4 %}
-        <div class="option"><strong>Option 4:</strong> {{ question.option4 }}</div>
-        {% endif %}
-        <div class="expected-answer"><strong>Expected Answer:</strong> {{ question.expected_answer }}</div>
     </div>
 </div>
 {% endblock main %}
