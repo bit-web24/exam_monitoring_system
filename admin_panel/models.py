@@ -31,7 +31,7 @@ class Exam(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     date = models.DateTimeField(null=True)
-    duration = models.DurationField(null=True)
+    duration = models.IntegerField(null=True)
 
     def __str__(self) -> str:
         return self.name
