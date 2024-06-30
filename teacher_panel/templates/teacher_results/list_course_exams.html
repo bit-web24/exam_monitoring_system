@@ -17,7 +17,7 @@
     <div class="grid-container">
         {% for exam in exams %}
         <div class="grid-item" style="background-color: #7cb342;">
-            <a>
+            <a href="{% url 'course_exam_result' teacher.pk exam.pk %}">
                 <i class="fas fa-book fa-3x"></i>
                 <h2>{{ exam.name }}</h2>
             </a>

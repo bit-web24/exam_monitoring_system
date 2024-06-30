@@ -105,8 +105,11 @@ def student_result_view(request, student_id, exam_id):
         if q.question_type == 'MCQ':
             if q.correct_option == a.option:
                 total_correct += 1
+                total_attempted += 1
             else:
-                total_wrong += 1
+                if a.option != None:
+                    total_attempted += 1
+                    total_wrong += 1
             questions.append({
                 'text': q.text,
                 'correct_option': q.correct_option,
@@ -115,16 +118,18 @@ def student_result_view(request, student_id, exam_id):
         else:
             if q.expected_truth_value == a.truth:
                 total_correct += 1
+                total_attempted += 1
             else:
-                total_wrong += 1
+                if a.truth != None:
+                    total_attempted += 1
+                    total_wrong += 1
             questions.append({
                 'text': q.text,
                 'correct_option': q.expected_truth_value,
                 'selected_option': a.truth,
             })
-        total_attempted += 1
 
-    percentage_score = (total_correct/total_attempted) * 100
+    percentage_score = 0 if total_attempted == 0 else (total_correct/total_attempted) * 100
 
     context = {
         'student': student,

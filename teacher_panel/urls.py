@@ -27,4 +27,5 @@ urlpatterns = [
     # results
     path('<int:teacher_id>/results/courses', views.results_list_courses, name='results_list_courses'),
     path('<int:teacher_id>/results/class/<int:class_id>/course/<int:course_id>', views.list_course_exams, name='list_course_exams'),
+    path('<int:teacher_id>/results/exam/<int:exam_id>', views.course_exam_result, name='course_exam_result')
 ]

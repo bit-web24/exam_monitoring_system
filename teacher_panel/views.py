@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from admin_panel.models import Class, Course, Teacher
+from admin_panel.models import Class, Course, StudentExamAttempted, StudentExamQuestionAnswer, Teacher
 from admin_panel.forms import ExamForm, QuestionForm
 from admin_panel.models import Exam, ExamQuestion, Question, TeacherExam, ClassCourseTeacher, ClassCourseExam
 from teacher_panel.forms import SelectExamForm
@@ -190,4 +190,48 @@ def list_course_exams(request, teacher_id, class_id, course_id):
         'teacher': teacher,
         'course': course,
         'exams': exams,
+    })
+
+def course_exam_result(request, teacher_id, exam_id):
+    teacher = get_object_or_404(Teacher, teacher_id=teacher_id)
+    exam = get_object_or_404(Exam, course_id=exam_id)
+    seas = StudentExamAttempted.objects.filter(exam=exam, attempted=True)
+    total_students = seas.count()
+    student_ids = [sea.student for sea in seas]
+    students = []
+    for student in student_ids:
+        total_correct, total_wrong, total_attempted = 0, 0, 0
+        all_student_exam_Q_and_A = StudentExamQuestionAnswer.objects.filter(student=student, exam=exam)
+        for student_exam_Q_and_A in all_student_exam_Q_and_A:
+            qa = student_exam_Q_and_A
+            q = qa.question
+            a = qa.answer
+            
+            if q.question_type == 'MCQ':
+                if q.correct_option == a.option:
+                    total_correct += 1
+                    total_attempted += 1
+                else:
+                    if a.option != None:
+                        total_attempted += 1
+                        total_wrong += 1
+            else:
+                if q.expected_truth_value == a.truth:
+                    total_correct += 1
+                    total_attempted += 1
+                else:
+                    if a.truth != None:
+                        total_attempted += 1
+                        total_wrong += 1
+        students.append({
+            'total_correct_answers': total_correct,
+            'total_wrong_answers': total_wrong,
+            'total_attempted': total_attempted,
+            'percentage_score': 0 if total_attempted == 0 else (total_correct/total_attempted) * 100
+        })
+
+    return render(request, 'teacher_results/course_exam_result.html', {
+        'teacher': teacher,
+        'students': students,
+        'total_students': total_students,
     })
