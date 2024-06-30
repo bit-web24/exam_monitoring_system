@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from admin_panel.models import Class, Teacher
+from admin_panel.models import Class, Course, Teacher
 from admin_panel.forms import ExamForm, QuestionForm
 from admin_panel.models import Exam, ExamQuestion, Question, TeacherExam, ClassCourseTeacher, ClassCourseExam
 from teacher_panel.forms import SelectExamForm
@@ -180,4 +180,14 @@ def results_list_courses(request, teacher_id):
         'teacher': teacher,
         })
 
-# def results_detail(request, teacher_id, course_id, class_id):
+def list_course_exams(request, teacher_id, class_id, course_id):
+    teacher = get_object_or_404(Teacher, teacher_id=teacher_id)
+    _class = get_object_or_404(Class, class_id=class_id)
+    course = get_object_or_404(Course, course_id=course_id)
+    class_course_exams = ClassCourseExam.objects.filter(_class=_class, course=course)
+    exams = [class_course_exam.exam for class_course_exam in class_course_exams]
+    return render(request, 'teacher_results/list_course_exams.html', {
+        'teacher': teacher,
+        'course': course,
+        'exams': exams,
+    })
