@@ -50,6 +50,9 @@
 {% endblock sidenav %}
 
 {% block main %}
+    {% for message in messages %}
+        <p style="color: red; text-align: center;">{{ message }}</p>
+    {% endfor %}
     <h1 class="main-heading">Student Form</h1>
     <form method="post" class="form-container">
         {% csrf_token %}

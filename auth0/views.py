@@ -43,15 +43,13 @@ def login_student(request):
         class_id = request.POST.get('class_id')
 
         try:
-            student_id = int(student_id)
-            # Since class_id is ForeignKey, ensure it's converted correctly or validate it
             class_id = int(class_id)
 
-            student = get_object_or_404(Student, student_id=student_id)
+            student = get_object_or_404(Student, unique_id=student_id)
             if student.class_id_id != class_id:
                 raise ValueError("Class ID does not match.")
 
-            request.session['student_id'] = student_id
+            request.session['student_id'] = student.pk
             request.session['class_id'] = class_id
 
             if not student.face_image:

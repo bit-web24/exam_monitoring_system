@@ -48,6 +48,7 @@ class Class(models.Model):
     
 class Student(models.Model):
     student_id = models.AutoField(primary_key=True)
+    unique_id = models.CharField(max_length=100, null=True)
     name = models.CharField(max_length=100)
     face_image = models.BinaryField(null=True, blank=True)
     phone = models.CharField(max_length=15)

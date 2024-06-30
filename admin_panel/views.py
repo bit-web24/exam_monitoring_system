@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
@@ -43,8 +44,12 @@ def student_create(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
         if form.is_valid():
-            student = form.save()
-            return redirect('student_detail', pk=student.pk)
+            unique_id = form.cleaned_data['unique_id']
+            if not Student.objects.filter(unique_id=unique_id).exists():
+                student = form.save()
+                return redirect('student_detail', pk=student.pk)
+            else:
+                messages.error(request, 'Student with unique ID Already Exists.')
     else:
         form = StudentForm()
     return render(request, 'students/student_form.html', {'form': form})
