@@ -47,9 +47,8 @@
     <a href="{% url 'student_exam_detail' student.pk exam.pk %}">
         <div class="grid-item">
             <h2>{{ exam.name }}</h2>
-            <h5><i class="fas fa-calendar-alt icon"></i>Date: {{ exam.date }}</h5>
+            <h5><i class="fas fa-calendar-alt icon"></i>Date: {{ exam.date.date }}</h5>
             <h5><i class="fas fa-clock icon"></i>Duration: {{ exam.duration }} minutes</h5>
-            <h5><i class="fas fa-check icon"></i>Attempted: None</h5>
         </div>
     </a>
     {% endfor %}
