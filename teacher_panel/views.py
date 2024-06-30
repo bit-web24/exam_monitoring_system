@@ -194,7 +194,7 @@ def list_course_exams(request, teacher_id, class_id, course_id):
 
 def course_exam_result(request, teacher_id, exam_id):
     teacher = get_object_or_404(Teacher, teacher_id=teacher_id)
-    exam = get_object_or_404(Exam, course_id=exam_id)
+    exam = get_object_or_404(Exam, pk=exam_id)
     seas = StudentExamAttempted.objects.filter(exam=exam, attempted=True)
     total_students = seas.count()
     student_ids = [sea.student for sea in seas]
@@ -224,6 +224,7 @@ def course_exam_result(request, teacher_id, exam_id):
                         total_attempted += 1
                         total_wrong += 1
         students.append({
+            'student': student,
             'total_correct_answers': total_correct,
             'total_wrong_answers': total_wrong,
             'total_attempted': total_attempted,
