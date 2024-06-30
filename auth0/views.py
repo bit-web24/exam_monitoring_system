@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-from admin_panel.models import Student, Teacher
+from admin_panel.models import Class, Student, Teacher
 import base64
 import pathlib
 import os
@@ -43,14 +43,13 @@ def login_student(request):
         class_id = request.POST.get('class_id')
 
         try:
-            class_id = int(class_id)
-
+            _class = get_object_or_404(Class, unique_id=class_id)
             student = get_object_or_404(Student, unique_id=student_id)
-            if student.class_id_id != class_id:
+            if student.class_id_id != _class.pk:
                 raise ValueError("Class ID does not match.")
 
             request.session['student_id'] = student.pk
-            request.session['class_id'] = class_id
+            request.session['class_id'] = _class.pk
 
             if not student.face_image:
                 return redirect('capture_face')
