@@ -15,6 +15,7 @@ urlpatterns = [
     path('<int:teacher_id>/exams/detail/<int:pk>/', views.exam_detail, name='teacher_exam_detail'),
     path('<int:teacher_id>/exams/assign2class', views.exam_assign2class, name='teacher_assign_exam2class'),
 
+    # questions
     path('<int:teacher_id>/questions/select_exam_to_create_question', views.select_exam_to_create_question, name='select_exam_to_create_question'),
     path('<int:teacher_id>/questions/select_exam_to_list_question', views.select_exam_to_list_question, name='select_exam_to_list_question'),
     path('<int:teacher_id>/questions/<int:exam_id>/all', views.question_list, name='teacher_question_list'),
@@ -22,4 +23,8 @@ urlpatterns = [
     path('<int:teacher_id>/questions/detail/<int:question_id>/', views.question_detail, name='teacher_question_detail'),
     path('<int:teacher_id>/questions/<int:question_id>/update/', views.question_update, name='teacher_question_update'),
     path('<int:teacher_id>/questions/<int:question_id>/delete/', views.question_delete, name='teacher_question_delete'),
+
+    # results
+    # path('<int:teacher_id>/results/select_class_and_exam_for_results', views.select_class_and_exam_for_results, name='select_class_and_exam_for_results'),
+    path('<int:teacher_id>/results/courses', views.results_list_courses, name='results_list_courses'),
 ]

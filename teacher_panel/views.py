@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from admin_panel.models import Class, Teacher
 from admin_panel.forms import ExamForm, QuestionForm
-from admin_panel.models import Exam, ExamQuestion, Question, TeacherExam
+from admin_panel.models import Exam, ExamQuestion, Question, TeacherExam, ClassCourseTeacher
 from teacher_panel.forms import SelectExamForm
 
 # Dashboard
@@ -164,3 +164,17 @@ def results(request, teacher_id):
     return render(request, 'teacher_results/dashboard.html', {
         'teacher': teacher,
     })
+
+def results_list_courses(request, teacher_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    ccts = ClassCourseTeacher.objects.filter(teacher_id=teacher)
+    class_course_s = []
+    for cct in ccts:
+        class_course_s.append({
+            'class': cct.class_id,
+            'course': cct.course_id,
+        })
+    return render(request, 'teacher_results/list_courses.html', {
+        'class_course_s': class_course_s,
+        'teacher': teacher,
+        })
