@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from admin_panel.models import Class, Teacher
 from admin_panel.forms import ExamForm, QuestionForm
-from admin_panel.models import Exam, ExamQuestion, Question, TeacherExam, ClassCourseTeacher
+from admin_panel.models import Exam, ExamQuestion, Question, TeacherExam, ClassCourseTeacher, ClassCourseExam
 from teacher_panel.forms import SelectExamForm
 
 # Dashboard
@@ -34,14 +34,14 @@ def exam_detail(request, teacher_id, pk):
 def exam_create(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
     if request.method == 'POST':
-        form = ExamForm(request.POST)
+        form = ExamForm(request.POST, teacher=teacher)
         if form.is_valid():
             _exam = form.save()
             teacher_exam = TeacherExam.objects.create(teacher=teacher, exam=_exam)
             teacher_exam.save()
             return redirect('teacher_exam_detail', teacher_id=teacher_id, pk=_exam.pk)
     else:
-        form = ExamForm()
+        form = ExamForm(teacher=teacher)
     return render(request, 'teacher_exams/exam_form.html', {'teacher': teacher, 'form': form})
 
 def exam_update(request, teacher_id, pk):
@@ -69,9 +69,10 @@ def exam_assign2class(request, teacher_id):
     if request.method == 'POST':
         class_id = request.POST.get('class_id')
         exam_id = request.POST.get('exam_id')
-        
+        exam_instance = get_object_or_404(Exam, pk=exam_id)
         class_instance = Class.objects.get(pk=class_id)
-        class_instance.exams.add(exam_id)
+        class_instance.exams.add(exam_instance.pk)
+        ClassCourseExam.objects.create(_class=class_instance, exam=exam_instance, course=exam_instance.course).save()
         return redirect('teacher_exam_list', teacher_id=teacher_id)
     
     classes = teacher.classes.all()
@@ -178,3 +179,5 @@ def results_list_courses(request, teacher_id):
         'class_course_s': class_course_s,
         'teacher': teacher,
         })
+
+# def results_detail(request, teacher_id, course_id, class_id):

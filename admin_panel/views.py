@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import ClassCourseTeacher, Student, Teacher, Class, Course, Exam
+from .models import ClassCourseTeacher, Student, Teacher, Class, Course, Exam, TeacherCourse
 from .forms import AssignCourseForm, SelectClassForm, SelectTeacherForm, StudentForm, TeacherForm, ClassForm, CourseForm, ExamForm
 
 # SECTION: DASHBOARD
@@ -172,6 +172,7 @@ def assign_course(request, teacher_id, class_id):
                 class_id=class_instance,
                 course_id=course
             )
+            TeacherCourse.objects.create(teacher=teacher, course=course).save()
             return redirect('class_course_teacher_list')
     else:
         form = AssignCourseForm(class_instance=class_instance)

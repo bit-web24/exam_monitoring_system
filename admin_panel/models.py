@@ -32,6 +32,7 @@ class Exam(models.Model):
     description = models.TextField(blank=True)
     date = models.DateTimeField(null=True)
     duration = models.IntegerField(null=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.name
@@ -85,9 +86,10 @@ class TeacherExam(models.Model):
     teacher = models.ForeignKey(Teacher, null=True, on_delete=models.CASCADE)
     exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
 
-class ClassCourse(models.Model):
+class ClassCourseExam(models.Model):
     _class = models.ForeignKey(Class, null=True, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
 
 class CourseExams(models.Model):
     course = models.ForeignKey(Course, null=True, on_delete=models.CASCADE)

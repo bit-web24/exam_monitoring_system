@@ -1,5 +1,5 @@
 from django import forms
-from .models import ClassCourseTeacher, Student, Teacher, Class, Course, Exam, Question
+from .models import ClassCourseTeacher, Student, Teacher, Class, Course, Exam, Question, TeacherCourse
 
 class StudentForm(forms.ModelForm):
     class Meta:
@@ -30,7 +30,7 @@ class CourseForm(forms.ModelForm):
 class ExamForm(forms.ModelForm):
     class Meta:
         model = Exam
-        fields = ['name', 'description', 'date', 'duration']
+        fields = ['name', 'course', 'description', 'date', 'duration']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),  # Example of using DateInput widget
         }
@@ -46,6 +46,14 @@ class ExamForm(forms.ModelForm):
         if not duration:
             raise forms.ValidationError("Duration must be a positive number.")
         return duration
+    
+    def __init__(self, *args, **kwargs):
+        teacher = kwargs.pop('teacher', None)
+        super(ExamForm, self).__init__(*args, **kwargs)
+        if teacher:
+            teacher_courses = TeacherCourse.objects.filter(teacher=teacher)
+            courses = [teacher_course.course.pk for teacher_course in teacher_courses]
+            self.fields['course'].queryset = Course.objects.filter(pk__in=courses)
 
 
 class QuestionForm(forms.ModelForm):
