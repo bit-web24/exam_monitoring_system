@@ -157,3 +157,10 @@ def question_delete(request, teacher_id, question_id):
         return redirect('teacher_question_list', teacher_id=teacher.pk, exam_id=exam.pk)
 
     return render(request, 'teacher_questions/question_confirm_delete.html', {'teacher': teacher, 'question': question, 'exam': exam})
+
+# Results
+def results(request, teacher_id):
+    teacher = get_object_or_404(Teacher, pk=teacher_id)
+    return render(request, 'teacher_results/dashboard.html', {
+        'teacher': teacher,
+    })

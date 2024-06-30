@@ -5,6 +5,7 @@ urlpatterns = [
     path('<int:teacher_id>/', views.dashboard, name='teacher_dashboard'),
     path('<int:teacher_id>/exams', views.exams, name='teacher_exams'),
     path('<int:teacher_id>/questions', views.questions, name='teacher_questions'),
+    path('<int:teacher_id>/results', views.results, name='teacher_results'),
 
     # exams
     path('<int:teacher_id>/exams/all', views.exam_list, name='teacher_exam_list'),
