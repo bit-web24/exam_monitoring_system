@@ -59,8 +59,13 @@ def student_update(request, pk):
     if request.method == 'POST':
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
-            form.save()
-            return redirect('student_list')
+            unique_id = form.cleaned_data['unique_id']
+            new_student = Student.objects.filter(unique_id=unique_id)
+            if new_student.exists() and new_student[0].pk == pk:
+                form.save()
+                return redirect('student_list')
+            else:
+                messages.error(request, 'Student\'s unique ID Can\'t be changed.')
     else:
         form = StudentForm(instance=student)
     return render(request, 'students/student_form.html', {'form': form})
@@ -211,8 +216,12 @@ def class_create(request):
     if request.method == 'POST':
         form = ClassForm(request.POST)
         if form.is_valid():
-            _class = form.save()
-            return redirect('class_detail', pk=_class.pk)
+            unique_id = form.cleaned_data['unique_id']
+            if not Class.objects.filter(unique_id=unique_id).exists():
+                _class = form.save()
+                return redirect('class_detail', pk=_class.pk)
+            else:
+                messages.error(request, f"Class with unique-id {unique_id} already exist.")
     else:
         form = ClassForm()
     return render(request, 'classes/class_form.html', {'form': form})
@@ -222,8 +231,13 @@ def class_update(request, pk):
     if request.method == 'POST':
         form = ClassForm(request.POST, instance=_class)
         if form.is_valid():
-            form.save()
-            return redirect('class_list')
+            unique_id = form.cleaned_data['unique_id']
+            new_class = Class.objects.filter(unique_id=unique_id)
+            if new_class.exists() and new_class[0].pk == pk:
+                form.save()
+                return redirect('class_list')
+            else:
+                messages.error(request, "Class's unique-id can't be changed.")
     else:
         form = ClassForm(instance=_class)
     return render(request, 'classes/class_form.html', {'form': form})

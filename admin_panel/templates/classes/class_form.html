@@ -48,6 +48,9 @@
 
 {% block main %}
     <div class="form-container">
+        {% for message in messages %}
+            <p style="color: red; text-align: center;">{{ message }}</p>
+        {% endfor %}
         <h1 class="form-heading">Class Form</h1>
         <form method="post">
             {% csrf_token %}

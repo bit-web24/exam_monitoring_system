@@ -77,7 +77,7 @@
     <div class="detail-container">
         <h1 class="detail-heading">Class Detail</h1>
         <div class="detail-card">
-            <p><strong>ID:</strong> {{ class.class_id }}</p>
+            <p><strong>ID:</strong> {{ class.unique_id }}</p>
             <p><strong>Name:</strong> {{ class.name }}</p>
             <p><strong>Courses:</strong>
                 {% for course in class.courses.all %}

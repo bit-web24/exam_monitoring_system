@@ -17,7 +17,7 @@ class TeacherForm(forms.ModelForm):
 class ClassForm(forms.ModelForm):
     class Meta:
         model = Class
-        fields = ['name', 'courses']
+        fields = ['unique_id', 'name', 'courses']
         widgets = {
             'courses': forms.CheckboxSelectMultiple()
         }
