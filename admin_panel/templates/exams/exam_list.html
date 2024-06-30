@@ -71,7 +71,7 @@
         <ul class="exam-list">
             {% for exam in exams %}
                 <li class="exam-item">
-                    <a href="{% url 'exam_detail' exam.pk %}" class="exam-link">{{ exam.name }}</a> -
+                    <a href="{% url 'exam_detail' exam.pk %}" class="exam-link">{{ exam.name }}</a>
                 </li>
             {% endfor %}
         </ul>
