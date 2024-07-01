@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import dashboard, students, teachers, classes, courses, exams
+from .views import dashboard, students, teachers, classes, courses, results
 from . import views
 
 urlpatterns = [
@@ -8,7 +8,7 @@ urlpatterns = [
     path('teachers', teachers, name='teachers'),
     path('classes', classes, name='classes'),
     path('courses', courses, name='courses'),
-    path('exams', exams, name='exams'),
+    path('results', results, name='results'),
     
     # students
     path('students/all', views.student_list, name='student_list'),
@@ -46,7 +46,9 @@ urlpatterns = [
     path('courses/delete/<int:pk>/', views.course_delete, name='course_delete'),
     path('courses/detail/<int:pk>/', views.course_detail, name='course_detail'),
 
-    # exams
-    path('exams/all', views.exam_list, name='exam_list'),
-    path('exams/detail/<int:pk>/', views.exam_detail, name='exam_detail'),
+    # results
+    path('results/classes', views.admin_results_list_classes, name='admin_results_list_classes'),
+    path('results/class/<int:class_id>/courses', views.admin_results_list_courses, name='admin_results_list_courses'),
+    path('results/class/<int:class_id>/course/<int:course_id>/exams', views.admin_results_list_exams, name='admin_results_list_exams'),
+    # path('results/class<int:class_id>/course/<int:course_id>/exam/<int:exam_id>', views.results_view_exam_detail, name='results_view_exam_detail'),
 ]

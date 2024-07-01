@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import ClassCourseTeacher, Student, Teacher, Class, Course, Exam, TeacherCourse
+from .models import ClassCourseTeacher, Student, Teacher, Class, Course, Exam, TeacherCourse, ClassCourseExam
 from .forms import AssignCourseForm, SelectClassForm, SelectTeacherForm, StudentForm, TeacherForm, ClassForm, CourseForm, ExamForm
 
 # SECTION: DASHBOARD
@@ -28,8 +28,8 @@ def courses(request):
 def classes(request):
     return render(request, 'classes/dashboard.html')
 
-def exams(request):
-    return render(request, 'exams/dashboard.html')
+def results(request):
+    return render(request, 'results/dashboard.html')
 
 # SECTION: STUDENTS 
 def student_list(request):
@@ -303,11 +303,27 @@ def course_delete(request, pk):
         return redirect('course_list')
     return render(request, 'courses/course_confirm_delete.html', {'course': course})
 
-# SECTION: EXAMS 
-def exam_list(request):
-    exams = Exam.objects.all()
-    return render(request, 'exams/exam_list.html', {'exams': exams})
+# SECTION: RESULTS 
+def admin_results_list_classes(request):
+    classes = Class.objects.all()
+    return render(request, 'results/class_list.html', {
+        'classes': classes,
+    })
 
-def exam_detail(request, pk):
-    _exam = get_object_or_404(Exam, pk=pk)
-    return render(request, 'exams/exam_detail.html', {'exam': _exam})
+def admin_results_list_courses(request, class_id):
+    _class = get_object_or_404(Class, pk=class_id)
+    return render(request, 'results/course_list.html', {
+        'class': _class,
+        'courses': _class.courses.all(),
+    })
+
+def admin_results_list_exams(request, class_id, course_id):
+    _class = get_object_or_404(Class, pk=class_id)
+    course = get_object_or_404(Course, pk=course_id)
+    ccxs = ClassCourseExam.objects.filter(_class=_class, course=course)
+    exams = [ccx.exam for ccx in ccxs]
+    return render(request, 'results/exam_list.html', {
+        'class': _class,
+        'course': course,
+        'exams': exams,
+    })
