@@ -16,7 +16,7 @@
 {% block main %}
     {% for exam in exams %}
         <div class="grid-container">
-            <a>
+            <a href="{% url 'admin_results_view_exam_detail' class.pk course.pk exam.pk %}">
                 <div class="grid-item" style="background-color: #7cb342;">
                     <i class="fas fa-file-alt fa-3x"></i>
                     <h2>{{ exam.name }}</h2>

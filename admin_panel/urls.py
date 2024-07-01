@@ -50,5 +50,5 @@ urlpatterns = [
     path('results/classes', views.admin_results_list_classes, name='admin_results_list_classes'),
     path('results/class/<int:class_id>/courses', views.admin_results_list_courses, name='admin_results_list_courses'),
     path('results/class/<int:class_id>/course/<int:course_id>/exams', views.admin_results_list_exams, name='admin_results_list_exams'),
-    # path('results/class<int:class_id>/course/<int:course_id>/exam/<int:exam_id>', views.results_view_exam_detail, name='results_view_exam_detail'),
+    path('results/class/<int:class_id>/course/<int:course_id>/exam/<int:exam_id>', views.admin_results_view_exam_detail, name='admin_results_view_exam_detail'),
 ]
