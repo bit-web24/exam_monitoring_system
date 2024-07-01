@@ -2,6 +2,57 @@
 
 {% block title %} Exams {% endblock title %}
 
+{% block head %}
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center align the content */
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #4a4a4a;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #dc3545;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+        .cancel-link {
+            display: inline-block;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: medium;
+        }
+        .cancel-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+{% endblock head %}
+
 {% block header %}
     {% include "teacher_dashboard/header.html" %}
 {% endblock header %}
@@ -11,13 +62,13 @@
 {% endblock sidenav %}
 
 {% block main %}
-    <div style="max-width: 600px; margin: 20px auto;">
-        <h1 style="margin-bottom: 20px;">Are you sure you want to delete {{ exam.name }}?</h1>
-        <form method="post" style="margin-bottom: 20px;">
+    <div class="container">
+        <h1>Are you sure you want to delete {{ exam.name }}?</h1>
+        <form method="post">
             {% csrf_token %}
-            <button type="submit" style="background-color: #dc3545; color: #ffffff; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Yes, delete</button>
+            <button type="submit">Yes, delete</button>
         </form>
-        <a href="{% url 'teacher_exam_list' teacher.pk %}" style="display: inline-block; background-color: #007bff; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px;">Cancel</a>
+        <a href="{% url 'teacher_exam_list' teacher.pk %}" class="cancel-link">Cancel</a>
     </div>
 {% endblock main %}
 
