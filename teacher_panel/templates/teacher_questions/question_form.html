@@ -86,29 +86,44 @@
                 {{ form.question_type }}
             </div>
             
-            <div class="form-group mcq-fields hidden">
+            <div class="form-group mcq-fields {% if form.instance.question_type != 'MCQ' %}hidden{% endif %}">
                 <label for="id_option1">Option 1</label>
                 {{ form.option1 }}
             </div>
-            <div class="form-group mcq-fields hidden">
+            <div class="form-group mcq-fields {% if form.instance.question_type != 'MCQ' %}hidden{% endif %}">
                 <label for="id_option2">Option 2</label>
                 {{ form.option2 }}
             </div>
-            <div class="form-group mcq-fields hidden">
+            <div class="form-group mcq-fields {% if form.instance.question_type != 'MCQ' %}hidden{% endif %}">
                 <label for="id_option3">Option 3</label>
                 {{ form.option3 }}
             </div>
-            <div class="form-group mcq-fields hidden">
+            <div class="form-group mcq-fields {% if form.instance.question_type != 'MCQ' %}hidden{% endif %}">
                 <label for="id_option4">Option 4</label>
                 {{ form.option4 }}
             </div>
-            <div class="form-group mcq-fields hidden">
-                <label for="id_expected_answer">Correct Option</label>
-                {{ form.correct_option }}
+            <div class="form-group mcq-fields {% if form.instance.question_type != 'MCQ' %}hidden{% endif %}">
+                <label>Correct Option</label>
+                <div>
+                    <input type="radio" id="correct_option1" name="correct_option" value="{{ form.option1.value }}" {% if form.instance.correct_option == form.option1.value %}checked{% endif %}>
+                    <label for="correct_option1">Option 1</label>
+                </div>
+                <div>
+                    <input type="radio" id="correct_option2" name="correct_option" value="{{ form.option2.value }}" {% if form.instance.correct_option == form.option2.value %}checked{% endif %}>
+                    <label for="correct_option2">Option 2</label>
+                </div>
+                <div>
+                    <input type="radio" id="correct_option3" name="correct_option" value="{{ form.option3.value }}" {% if form.instance.correct_option == form.option3.value %}checked{% endif %}>
+                    <label for="correct_option3">Option 3</label>
+                </div>
+                <div>
+                    <input type="radio" id="correct_option4" name="correct_option" value="{{ form.option4.value }}" {% if form.instance.correct_option == form.option4.value %}checked{% endif %}>
+                    <label for="correct_option4">Option 4</label>
+                </div>
             </div>
             
-            <div class="form-group tf-field hidden">
-                <label for="id_expected_truth_ans">Expected Truth Value</label>
+            <div class="form-group tf-field {% if form.instance.question_type != 'TF' %}hidden{% endif %}">
+                <label for="id_expected_truth_value">Expected Truth Value</label>
                 {{ form.expected_truth_value }}
             </div>
             
