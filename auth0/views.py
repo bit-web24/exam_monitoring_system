@@ -42,10 +42,10 @@ def login_student(request):
         class_id = request.POST.get('class_id')
 
         try:
-            _class = get_object_or_404(Class, unique_id=class_id)
-            student = get_object_or_404(Student, unique_id=student_id)
+            _class = Class.objects.get(unique_id=class_id)
+            student = Student.objects.get(unique_id=student_id)
             if student.class_id_id != _class.pk:
-                raise ValueError("Class ID does not match.")
+                messages.error(request, 'Incorrect Class ID.')
 
             request.session['student_id'] = student.pk
             request.session['class_id'] = _class.pk
@@ -55,8 +55,10 @@ def login_student(request):
             else:
                 return redirect('verify_face')
 
-        except (ValueError, TypeError, Student.DoesNotExist) as e:
-            messages.error(request, f'Error: {str(e)}')
+        except Student.DoesNotExist:
+            messages.error(request, 'Student Doesn\'t Exist with that ID.')
+        except Class.DoesNotExist:
+            messages.error(request, 'Incorrect Class ID.')
 
     return render(request, 'login_student.html')
 
