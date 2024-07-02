@@ -122,13 +122,12 @@ def verify_face(request):
 
                 res = DeepFace.verify(img1_path=path1, img2_path=path2)
                 
-                import shutil
-                shutil.rmtree(pathlib.Path('captured'))
-                
                 if res['verified']:
+                    import shutil
+                    shutil.rmtree(pathlib.Path('captured'))
                     return redirect('student_dashboard', student_id=student_id)
                 else:
-                    messages.error(request, 'Unauthorized user detected.')
+                    messages.error(request, 'Warning! You do not hold this account. Register youself first.')
             else:
                 messages.error(request, 'Please capture your face image.')
 

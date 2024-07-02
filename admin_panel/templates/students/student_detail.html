@@ -28,6 +28,14 @@
             margin-bottom: 10px;
         }
 
+        .detail-container img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
         .action-link {
             display: inline-block;
             margin-top: 20px;
@@ -41,6 +49,11 @@
 
         .action-link + .action-link {
             margin-left: 10px;
+        }
+
+        #registerd_image {
+            margin-left: 250px;
+            margin-top: -100px;
         }
     </style>
 {% endblock style %}
@@ -60,6 +73,12 @@
         <p><strong>Name:</strong> {{ student.name }}</p>
         <p><strong>Phone:</strong> {{ student.phone }}</p>
         <p><strong>Class:</strong> {{ student.class_id }}</p>
+        {% if face_image_base64 %}
+            <p>
+                <strong>Registered Face: </strong>
+                <img src="data:image/jpeg;base64,{{ face_image_base64 }}" alt="Student Face Image" id="registerd_image"/>
+            </p>
+        {% endif %}
         <a href="{% url 'student_list' %}" class="action-link">Back to Student List</a>
         <a href="{% url 'student_update' student.pk %}" class="action-link">Edit</a>
     </div>

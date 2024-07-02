@@ -1,3 +1,4 @@
+import base64
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -38,7 +39,13 @@ def student_list(request):
 
 def student_detail(request, pk):
     student = get_object_or_404(Student, pk=pk)
-    return render(request, 'students/student_detail.html', {'student': student})
+    face_image_base64 = None
+    if student.face_image:
+        face_image_base64 = base64.b64encode(student.face_image).decode('utf-8')
+    return render(request, 'students/student_detail.html', {
+        'student': student,
+        'face_image_base64': face_image_base64,
+    })
 
 def student_create(request):
     if request.method == 'POST':
