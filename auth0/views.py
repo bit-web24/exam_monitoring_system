@@ -3,7 +3,6 @@ from django.contrib import messages
 from admin_panel.models import Class, Student, Teacher
 import base64
 import pathlib
-import os
 from deepface import DeepFace
 
 def choose_role(request):
@@ -81,14 +80,27 @@ def capture_face(request):
     return render(request, 'capture_face.html')
 
 def byte_to_png(data, name):
-    captured =  pathlib.Path('captured')
-    if not captured.exists():
-        captured.mkdir()
-    face_filename = captured.joinpath(f'{name}.png')
-    face_filename = str(face_filename)
-    with open(face_filename, 'wb') as f:
-        f.write(data)
-    return face_filename
+    try:
+        captured = pathlib.Path('captured')
+        if not captured.exists():
+            captured.mkdir(parents=True, exist_ok=True)
+
+        face_filename = captured.joinpath(f'{name}.png')
+        face_filename_str = str(face_filename)
+
+        with open(face_filename_str, 'wb') as f:
+            f.write(data)
+
+        return face_filename_str
+
+    except FileNotFoundError as fnf_error:
+        print(f"File not found error: {fnf_error}")
+    except PermissionError as p_error:
+        print(f"Permission error: {p_error}")
+    except OSError as os_error:
+        print(f"OS error: {os_error}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def verify_face(request):
     if request.method == 'POST':
