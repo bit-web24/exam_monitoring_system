@@ -1,7 +1,7 @@
 {% extends "dashboard/index.html" %}
 
 {% block title %} 
-    Students 
+    Student Detail
 {% endblock title %}
 
 {% block style %}
@@ -14,7 +14,7 @@
         }
 
         .detail-container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
             background-color: #fff;
@@ -28,7 +28,7 @@
             margin-bottom: 10px;
         }
 
-        .detail-container img {
+        .registered-image {
             display: block;
             max-width: 100%;
             height: auto;
@@ -51,9 +51,18 @@
             margin-left: 10px;
         }
 
-        #registerd_image {
-            margin-left: 250px;
-            margin-top: -100px;
+        .captured-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .captured-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #ddd;
         }
     </style>
 {% endblock style %}
@@ -76,9 +85,20 @@
         {% if face_image_base64 %}
             <p>
                 <strong>Registered Face: </strong>
-                <img src="data:image/jpeg;base64,{{ face_image_base64 }}" alt="Student Face Image" id="registerd_image"/>
+                <img src="data:image/jpeg;base64,{{ face_image_base64 }}" alt="Student Face Image" class="registered-image"/>
             </p>
         {% endif %}
+        <div>
+            <h2>Face Images Captured During Each Exam</h2>
+            {% for capture in captured %}
+                <p><strong>Exam:</strong> {{ capture.exam.name }}</p>
+                <div class="captured-images">
+                    {% for image in capture.images %}
+                        <img src="../../../media/{{ image }}" alt="Captured Motion Image" class="captured-image">
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
         <a href="{% url 'student_list' %}" class="action-link">Back to Student List</a>
         <a href="{% url 'student_update' student.pk %}" class="action-link">Edit</a>
     </div>

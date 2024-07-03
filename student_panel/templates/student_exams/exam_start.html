@@ -50,6 +50,10 @@
     .submit-button:hover {
         background-color: #45a049;
     }
+    
+    #video {
+        border: 2px solid red;
+    }
 </style>
 <script>
     function startTimer(duration, display) {
@@ -82,7 +86,6 @@
         }
     };
 </script>
-
 {% endblock head %}
 
 {% block header %}
@@ -97,6 +100,7 @@
 <div class="container">
     <h1>Take Exam</h1>
     <div class="timer">Time Remaining: <span id="time">00:00</span></div>
+    <video id="video" width="640" height="480" autoplay></video>
     <form id="exam-form" method="post" action="{% url 'student_exam_submit' student.pk exam.pk %}">
         {% csrf_token %}
         <div class="exam-questions">
@@ -118,6 +122,76 @@
         <button type="submit" class="submit-button">Submit Exam</button>
     </form>
 </div>
+
+<script>
+    const video = document.getElementById('video');
+    const constraints = { video: true };
+
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then((stream) => {
+            video.srcObject = stream;
+        })
+        .catch((err) => {
+            console.error('Error accessing webcam: ' + err);
+        });
+
+    let lastImageData;
+    const canvas = document.createElement('canvas');
+    canvas.width = 640;
+    canvas.height = 480;
+    const context = canvas.getContext('2d');
+    let counter = 0;
+
+    function checkForMotion() {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+        if (lastImageData) {
+            const diff = pixelDiff(imageData.data, lastImageData.data);
+            if (diff > 4) {
+                // Capture the image and send to the server
+                sendMotionImage(counter);
+                counter++;
+            }
+        }
+
+        lastImageData = imageData;
+        requestAnimationFrame(checkForMotion);
+    }
+
+    function pixelDiff(data1, data2) {
+        let diff = 0;
+        for (let i = 0; i < data1.length; i += 4) {
+            diff += Math.abs(data1[i] - data2[i]);
+        }
+        return diff / data1.length;
+    }
+
+    function sendMotionImage(counter) {
+        canvas.toBlob((blob) => {
+            const formData = new FormData();
+            formData.append('motion_image', blob, `${counter}.png`);
+            formData.append('exam_id', '{{exam.pk}}')
+
+            fetch('/studentpanel/{{student.pk}}/motion-detected/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }, 'image/png');
+    }
+
+    checkForMotion();
+</script>
 {% endblock main %}
 
 {% block footer %}

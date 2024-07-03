@@ -1,5 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from admin_panel.models import Class, Exam, Student, StudentExamAttempted, ExamQuestion, Question, StudentExamQuestionAnswer, Answer
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+
+import os
 
 def student_dashboard(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
@@ -141,3 +147,16 @@ def student_result_view(request, student_id, exam_id):
     }
     
     return render(request, 'student_results/result_detail.html', context)
+
+
+@csrf_exempt
+def motion_detected(request, student_id):
+    if request.method == 'POST' and request.FILES.get('motion_image'):
+        motion_image = request.FILES['motion_image']
+        exam_id = request.POST.get('exam_id')
+        file_path = os.path.join('motion', f'{student_id}', f'{exam_id}', motion_image.name)
+        default_storage.save(file_path, ContentFile(motion_image.read()))
+        
+        print(f"Motion detected and image saved to {file_path}")
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'failed'}, status=400)

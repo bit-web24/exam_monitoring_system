@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import ClassCourseTeacher, Student, StudentExamAttempted, StudentExamQuestionAnswer, Teacher, Class, Course, Exam, TeacherCourse, ClassCourseExam
 from .forms import AssignCourseForm, SelectClassForm, SelectTeacherForm, StudentForm, TeacherForm, ClassForm, CourseForm, ExamForm
+from django.conf import settings
+import os
 
 # SECTION: DASHBOARD
 def dashboard(request):
@@ -42,10 +44,30 @@ def student_detail(request, pk):
     face_image_base64 = None
     if student.face_image:
         face_image_base64 = base64.b64encode(student.face_image).decode('utf-8')
+    seas = StudentExamAttempted.objects.filter(student=student, attempted=True)
+    exams = [sea.exam for sea in seas]
+    captured = []
+    for exam in exams:
+        d = get_student_exam_images(student.pk, exam.pk)
+        captured.append(d)
     return render(request, 'students/student_detail.html', {
         'student': student,
         'face_image_base64': face_image_base64,
+        'captured': captured,
     })
+
+def get_student_exam_images(student_id, exam_id):
+    image_folder = os.path.join(settings.MOTION_ROOT, str(student_id), str(exam_id))
+    exam = get_object_or_404(Exam, pk=exam_id)
+    images = []
+    if os.path.exists(image_folder):
+        for filename in os.listdir(image_folder):
+            if filename.endswith(".png"):
+                images.append(os.path.join(settings.MOTION_URL, str(student_id), str(exam_id), filename))
+    return {
+        'exam': exam,
+        'images': images,
+    }
 
 def student_create(request):
     if request.method == 'POST':

@@ -11,4 +11,6 @@ urlpatterns = [
     path('<int:student_id>/exams/<int:exam_id>/submit', views.student_exam_submit, name='student_exam_submit'),
 
     path('<int:student_id>/results/<int:exam_id>', views.student_result_view, name='student_result_view'),
+
+    path('<int:student_id>/motion-detected/', views.motion_detected, name='motion_detected'),
 ]

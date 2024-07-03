@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from .views import dashboard, students, teachers, classes, courses, results
 from . import views
@@ -51,4 +53,4 @@ urlpatterns = [
     path('results/class/<int:class_id>/courses', views.admin_results_list_courses, name='admin_results_list_courses'),
     path('results/class/<int:class_id>/course/<int:course_id>/exams', views.admin_results_list_exams, name='admin_results_list_exams'),
     path('results/class/<int:class_id>/course/<int:course_id>/exam/<int:exam_id>', views.admin_results_view_exam_detail, name='admin_results_view_exam_detail'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
