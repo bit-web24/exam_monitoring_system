@@ -85,7 +85,7 @@
 </head>
 <body>
     <div class="login-container">
-        <h2>Student Login</h2>
+        <h2>Student Register</h2>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="face_image">Capture Your Face Image:</label>
@@ -94,7 +94,7 @@
             <canvas id="canvas" style="display:none;"></canvas>
             <img id="captured-image" style="display:none;" />
             <input type="hidden" id="face_image" name="face_image">
-            <input type="submit" value="Login">
+            <input type="submit" value="Register">
         </form>
         {% for message in messages %}
             <p>{{ message }}</p>
