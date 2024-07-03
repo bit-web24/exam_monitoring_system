@@ -71,6 +71,20 @@ def capture_face(request):
         
         try:
             image_data = base64.b64decode(face_image.split(',')[1])
+            all_students = Student.objects.all()
+
+            for existing_student in all_students:
+                if existing_student.face_image:
+                    path1 = byte_to_png(image_data, 'current_image')
+                    path2 = byte_to_png(existing_student.face_image, f'stored_image_{existing_student.pk}')
+                    
+                    res = DeepFace.verify(img1_path=path1, img2_path=path2)
+                    
+                    import shutil
+                    shutil.rmtree(pathlib.Path('captured'))
+                    if res['verified']:
+                        messages.error(request, 'Student with this face already exists.')
+                        return redirect('capture_face')
             student = get_object_or_404(Student, student_id=student_id, class_id=class_id)
             student.face_image = image_data
             student.save()
