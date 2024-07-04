@@ -3,6 +3,7 @@ from django.contrib import messages
 from admin_panel.models import Class, Student, Teacher
 import base64
 import pathlib
+import shutil
 from deepface import DeepFace
 
 def choose_role(request):
@@ -28,7 +29,7 @@ def login_teacher(request):
             teacher = Teacher.objects.get(name=username)
             if teacher.password == password:
                 request.session['teacher_id'] = teacher.pk
-                return redirect(f'teacher_dashboard', teacher_id=teacher.pk)
+                return redirect('teacher_dashboard', teacher_id=teacher.pk)
             else:
                 messages.error(request, 'Invalid password.')
         except Teacher.DoesNotExist:
@@ -79,19 +80,20 @@ def capture_face(request):
                     path2 = byte_to_png(existing_student.face_image, f'stored_image_{existing_student.pk}')
                     
                     res = DeepFace.verify(img1_path=path1, img2_path=path2)
-                    
-                    import shutil
-                    shutil.rmtree(pathlib.Path('captured'))
                     if res['verified']:
                         messages.error(request, 'Student with this face already exists.')
+                        cleanup()
                         return redirect('capture_face')
-            student = get_object_or_404(Student, student_id=student_id, class_id=class_id)
+
+            student = get_object_or_404(Student, pk=student_id, class_id=class_id)
             student.face_image = image_data
             student.save()
             messages.success(request, 'Logged in successfully.')
+            cleanup()
             return redirect('student_dashboard', student_id=student_id)
         except Exception as e:
             messages.error(request, f'Error: {str(e)}')
+            cleanup()
 
     return render(request, 'capture_face.html')
 
@@ -118,6 +120,12 @@ def byte_to_png(data, name):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
+def cleanup():
+    try:
+        shutil.rmtree(pathlib.Path('captured'))
+    except FileNotFoundError:
+        pass
+
 def verify_face(request):
     if request.method == 'POST':
         try:
@@ -126,7 +134,7 @@ def verify_face(request):
             class_id = request.session.get('class_id')
 
             if face_image:
-                student = get_object_or_404(Student, student_id=student_id, class_id_id=class_id)
+                student = get_object_or_404(Student, pk=student_id, class_id_id=class_id)
 
                 img_data = base64.b64decode(face_image.split(',')[1])
                 stored_face_data = student.face_image
@@ -137,15 +145,17 @@ def verify_face(request):
                 res = DeepFace.verify(img1_path=path1, img2_path=path2)
                 
                 if res['verified']:
-                    import shutil
-                    shutil.rmtree(pathlib.Path('captured'))
+                    cleanup()
                     return redirect('student_dashboard', student_id=student_id)
                 else:
-                    messages.error(request, 'Warning! You do not hold this account. Register youself first.')
+                    messages.error(request, 'Warning! You do not hold this account. Register yourself first.')
+                    cleanup()
             else:
                 messages.error(request, 'Please capture your face image.')
+                cleanup()
 
         except Exception as e:
             messages.error(request, f'Error: {str(e)}')
+            cleanup()
 
     return render(request, 'verify_face.html')
