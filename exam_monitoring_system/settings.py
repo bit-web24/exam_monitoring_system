@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'teacher_panel',
     'student_panel',
     'auth0',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

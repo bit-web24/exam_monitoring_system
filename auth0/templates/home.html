@@ -114,8 +114,8 @@
         <nav>
             <ul class="nav-left">
                 <li><a href="{% url 'landingpage' %}">Home</a></li>
-                <li><a href="{% url 'choose_role' %}">Teacher</a></li>
-                <li><a href="{% url 'choose_role' %}">Student</a></li>
+                <li><a href="{% url 'login_teacher' %}">Teacher</a></li>
+                <li><a href="{% url 'login_student' %}">Student</a></li>
                 <li><a href="{% url 'dashboard' %}">Admin</a></li>
             </ul>
             <ul class="nav-right">
@@ -136,7 +136,7 @@
         </section>
         <h3>Start Your Journey Here: </h3>
         <section class="cta">
-            <a href="{% url 'choose_role' %}" class="btn">Get Started</a>
+            <a href="{% url 'dashboard' %}" class="btn">Get Started</a>
         </section>
     </main>
 </body>
