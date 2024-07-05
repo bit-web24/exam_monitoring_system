@@ -64,7 +64,7 @@ header h1 {
 }
 
 /* Style for the button */
-header a {
+header button {
     padding: 10px 20px; /* Add padding to the button */
     background-color: #1db0d6; /* Background color for button */
     color: white; /* Text color for button */

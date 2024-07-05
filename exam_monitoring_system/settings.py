@@ -21,6 +21,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MOTION_URL = '/motion/'
 MOTION_ROOT = os.path.join(MEDIA_ROOT, 'motion')
 
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/adminpanel/'
+LOGOUT_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 

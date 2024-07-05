@@ -7,8 +7,14 @@ from .models import ClassCourseTeacher, Student, StudentExamAttempted, StudentEx
 from .forms import AssignCourseForm, SelectClassForm, SelectTeacherForm, StudentForm, TeacherForm, ClassForm, CourseForm, ExamForm
 from django.conf import settings
 import os
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+def superuser_required(view_func):
+    decorated_view_func = user_passes_test(lambda user: user.is_superuser, login_url='/login/')(view_func)
+    return login_required(decorated_view_func)
 
 # SECTION: DASHBOARD
+@superuser_required
 def dashboard(request):
     total = {
         'students' : len(Student.objects.all()),
@@ -19,26 +25,34 @@ def dashboard(request):
     }
     return render(request, 'dashboard/dashboard.html', {'total': total})
 
+@superuser_required
 def students(request):
     return render(request, 'students/dashboard.html')
 
+@superuser_required
 def teachers(request):
     return render(request, 'teachers/dashboard.html')
 
+@superuser_required
 def courses(request):
     return render(request, 'courses/dashboard.html')
 
+@superuser_required
 def classes(request):
     return render(request, 'classes/dashboard.html')
 
+@superuser_required
 def results(request):
     return render(request, 'results/dashboard.html')
 
 # SECTION: STUDENTS 
+
+@superuser_required
 def student_list(request):
     students = Student.objects.all()
     return render(request, 'students/student_list.html', {'students': students})
 
+@superuser_required
 def student_detail(request, pk):
     student = get_object_or_404(Student, pk=pk)
     face_image_base64 = None
@@ -56,6 +70,7 @@ def student_detail(request, pk):
         'captured': captured,
     })
 
+@superuser_required
 def get_student_exam_images(student_id, exam_id):
     image_folder = os.path.join(settings.MOTION_ROOT, str(student_id), str(exam_id))
     exam = get_object_or_404(Exam, pk=exam_id)
@@ -69,6 +84,7 @@ def get_student_exam_images(student_id, exam_id):
         'images': images,
     }
 
+@superuser_required
 def student_create(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -83,6 +99,7 @@ def student_create(request):
         form = StudentForm()
     return render(request, 'students/student_form.html', {'form': form})
 
+@superuser_required
 def student_update(request, pk):
     student = get_object_or_404(Student, pk=pk)
     if request.method == 'POST':
@@ -99,6 +116,7 @@ def student_update(request, pk):
         form = StudentForm(instance=student)
     return render(request, 'students/student_form.html', {'form': form})
 
+@superuser_required
 def student_delete(request, pk):
     student = get_object_or_404(Student, pk=pk)
     if request.method == 'POST':
@@ -106,6 +124,7 @@ def student_delete(request, pk):
         return redirect('student_list')
     return render(request, 'students/student_confirm_delete.html', {'student': student})
 
+@superuser_required
 def student_assign2class(request):
     if request.method == 'POST':
         class_id = request.POST.get('class_id')
@@ -124,15 +143,19 @@ def student_assign2class(request):
     return render(request, 'students/student_assign2class.html', {'students': students, 'classes': classes})
 
 
-# SECTION: TEACHERS 
+# SECTION: TEACHERS
+
+@superuser_required
 def teacher_list(request):
     teachers = Teacher.objects.all()
     return render(request, 'teachers/teacher_list.html', {'teachers': teachers})
 
+@superuser_required
 def teacher_detail(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     return render(request, 'teachers/teacher_detail.html', {'teacher': teacher})
 
+@superuser_required
 def teacher_create(request):
     if request.method == 'POST':
         form = TeacherForm(request.POST)
@@ -143,6 +166,7 @@ def teacher_create(request):
         form = TeacherForm()
     return render(request, 'teachers/teacher_form.html', {'form': form})
 
+@superuser_required
 def teacher_update(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     if request.method == 'POST':
@@ -154,6 +178,7 @@ def teacher_update(request, pk):
         form = TeacherForm(instance=teacher)
     return render(request, 'teachers/teacher_form.html', {'form': form})
 
+@superuser_required
 def teacher_delete(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     if request.method == 'POST':
@@ -161,6 +186,7 @@ def teacher_delete(request, pk):
         return redirect('teacher_list')
     return render(request, 'teachers/teacher_confirm_delete.html', {'teacher': teacher})
 
+@superuser_required
 def teacher_assign2class(request):
     if request.method == 'POST':
         teacher_id = request.POST.get('teacher_id')
@@ -177,6 +203,7 @@ def teacher_assign2class(request):
     classes = Class.objects.all()
     return render(request, 'teachers/teacher_assign2class.html', {'teachers': teachers, 'classes': classes})
 
+@superuser_required
 def select_teacher(request):
     if request.method == 'POST':
         form = SelectTeacherForm(request.POST)
@@ -187,6 +214,7 @@ def select_teacher(request):
         form = SelectTeacherForm()
     return render(request, 'teachers/select_teacher.html', {'form': form})
 
+@superuser_required
 def select_class(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
     if request.method == 'POST':
@@ -198,6 +226,7 @@ def select_class(request, teacher_id):
         form = SelectClassForm(teacher=teacher)
     return render(request, 'teachers/select_class.html', {'form': form, 'teacher': teacher})
 
+@superuser_required
 def assign_course(request, teacher_id, class_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
     class_instance = get_object_or_404(Class, pk=class_id)
@@ -222,25 +251,31 @@ def assign_course(request, teacher_id, class_id):
         'form': form,
     })
 
+@superuser_required
 def load_classes(request):
     teacher_id = request.GET.get('teacher_id')
     classes = Class.objects.filter(teacher__id=teacher_id)
     return JsonResponse(list(classes.values('id', 'name')), safe=False)
 
+@superuser_required
 def class_course_teacher_list(request):
     assignments = ClassCourseTeacher.objects.all()
     return render(request, 'teachers/class_course_teacher_list.html', {'assignments': assignments})
 
 
-# SECTION: CLASSES 
+# SECTION: CLASSES
+
+@superuser_required
 def class_list(request):
     classes = Class.objects.all()
     return render(request, 'classes/class_list.html', {'classes': classes})
 
+@superuser_required
 def class_detail(request, pk):
     _class = get_object_or_404(Class, pk=pk)
     return render(request, 'classes/class_detail.html', {'class': _class})
 
+@superuser_required
 def class_create(request):
     if request.method == 'POST':
         form = ClassForm(request.POST)
@@ -255,6 +290,7 @@ def class_create(request):
         form = ClassForm()
     return render(request, 'classes/class_form.html', {'form': form})
 
+@superuser_required
 def class_update(request, pk):
     _class = get_object_or_404(Class, pk=pk)
     if request.method == 'POST':
@@ -271,6 +307,7 @@ def class_update(request, pk):
         form = ClassForm(instance=_class)
     return render(request, 'classes/class_form.html', {'form': form})
 
+@superuser_required
 def class_delete(request, pk):
     _class = get_object_or_404(Class, pk=pk)
     if request.method == 'POST':
@@ -278,6 +315,7 @@ def class_delete(request, pk):
         return redirect('class_list')
     return render(request, 'classes/class_confirm_delete.html', {'class': _class})
 
+@superuser_required
 def class_assigncourse(request):
     if request.method == 'POST':
         class_id = request.POST.get('class_id')
@@ -295,15 +333,19 @@ def class_assigncourse(request):
     return render(request, 'classes/class_assigncourse.html', {'courses': courses, 'classes': classes})
 
 
-# SECTION: COURSES 
+# SECTION: COURSES
+
+@superuser_required
 def course_list(request):
     courses = Course.objects.all()
     return render(request, 'courses/course_list.html', {'courses': courses})
 
+@superuser_required
 def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
     return render(request, 'courses/course_detail.html', {'course': course})
 
+@superuser_required
 def course_create(request):
     if request.method == 'POST':
         form = CourseForm(request.POST)
@@ -314,6 +356,7 @@ def course_create(request):
         form = CourseForm()
     return render(request, 'courses/course_form.html', {'form': form})
 
+@superuser_required
 def course_update(request, pk):
     course = get_object_or_404(Course, pk=pk)
     if request.method == 'POST':
@@ -325,6 +368,7 @@ def course_update(request, pk):
         form = CourseForm(instance=course)
     return render(request, 'courses/course_form.html', {'form': form})
 
+@superuser_required
 def course_delete(request, pk):
     course = get_object_or_404(Course, pk=pk)
     if request.method == 'POST':
@@ -332,13 +376,16 @@ def course_delete(request, pk):
         return redirect('course_list')
     return render(request, 'courses/course_confirm_delete.html', {'course': course})
 
-# SECTION: RESULTS 
+# SECTION: RESULTS
+
+@superuser_required
 def admin_results_list_classes(request):
     classes = Class.objects.all()
     return render(request, 'results/class_list.html', {
         'classes': classes,
     })
 
+@superuser_required
 def admin_results_list_courses(request, class_id):
     _class = get_object_or_404(Class, pk=class_id)
     return render(request, 'results/course_list.html', {
@@ -346,6 +393,7 @@ def admin_results_list_courses(request, class_id):
         'courses': _class.courses.all(),
     })
 
+@superuser_required
 def admin_results_list_exams(request, class_id, course_id):
     _class = get_object_or_404(Class, pk=class_id)
     course = get_object_or_404(Course, pk=course_id)
@@ -357,6 +405,7 @@ def admin_results_list_exams(request, class_id, course_id):
         'exams': exams,
     })
 
+@superuser_required
 def admin_results_view_exam_detail(request, class_id, course_id, exam_id):
     _class = get_object_or_404(Class, pk=class_id)
     course = get_object_or_404(Course, pk=course_id)
