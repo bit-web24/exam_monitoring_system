@@ -3,6 +3,7 @@ from admin_panel.models import Class, Course, StudentExamAttempted, StudentExamQ
 from admin_panel.forms import ExamForm, QuestionForm
 from admin_panel.models import Exam, ExamQuestion, Question, TeacherExam, ClassCourseTeacher, ClassCourseExam
 from teacher_panel.forms import SelectExamForm
+from django.contrib import messages
 
 # Dashboard
 def dashboard(request, teacher_id):
@@ -112,15 +113,24 @@ def select_exam_to_create_question(request, teacher_id):
 def question_create(request, teacher_id, exam_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
     exam = get_object_or_404(Exam, exam_id=exam_id)
-    
+
     if request.method == 'POST':
         form = QuestionForm(request.POST)
         if form.is_valid():
-            question = form.save()
-            eq = ExamQuestion.objects.create(exam=exam, question=question)
-            eq.save()
-            return redirect('teacher_question_detail', teacher_id=teacher.pk, question_id=question.pk)
-    form = QuestionForm()
+            question_text = form.cleaned_data['text']
+            existing_exam_question = ExamQuestion.objects.filter(exam=exam, question__text=question_text).first()
+            
+            if existing_exam_question:
+                messages.error(request, 'A question with the same text already exists in this exam.')
+            else:
+                question = form.save()
+                eq = ExamQuestion.objects.create(exam=exam, question=question)
+                eq.save()
+                return redirect('teacher_question_detail', teacher_id=teacher.pk, question_id=question.pk)
+            
+    else:
+        form = QuestionForm()
+
     return render(request, 'teacher_questions/question_form.html', {'teacher': teacher, 'form': form})
 
 def question_detail(request, teacher_id, question_id):

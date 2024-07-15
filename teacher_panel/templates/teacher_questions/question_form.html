@@ -21,7 +21,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-top: 50px;
         }
-        h1 {
+        .container h1 {
             text-align: center;
             margin-bottom: 20px;
             font-size: 24px;
@@ -121,6 +121,11 @@
 
 {% block main %}
     <div class="container">
+        <ul>
+            {% for message in messages %}
+                <li style="color: red;" >{{ message }}</li>
+            {% endfor %}
+        </ul>
         <h1>{% if update %}Update{% else %}Create{% endif %} Question</h1>
         <form method="post">
             {% csrf_token %}
