@@ -108,6 +108,11 @@
             // Initialize fields based on the current selection
             toggleFields();
         });
+
+        function updateCorrectOptionValue(radioId, inputId) {
+            var inputValue = document.getElementById(inputId).value;
+            document.getElementById(radioId).value = inputValue;
+        }
     </script>
 {% endblock head %}
 
@@ -160,19 +165,19 @@
             <div class="form-group mcq-fields {% if form.instance.question_type != 'MCQ' %}hidden{% endif %}">
                 <label>Correct Option</label>
                 <div>
-                    <input type="radio" id="correct_option1" name="correct_option" value="{{ form.option1.value }}" {% if form.instance.correct_option == form.option1.value %}checked{% endif %}>
+                    <input type="radio" id="correct_option1" name="correct_option" value="{{ form.option1.value }}" onclick="updateCorrectOptionValue('correct_option1', 'id_option1')" {% if form.instance.correct_option == form.option1.value %}checked{% endif %}>
                     <label for="correct_option1">Option 1</label>
                 </div>
                 <div>
-                    <input type="radio" id="correct_option2" name="correct_option" value="{{ form.option2.value }}" {% if form.instance.correct_option == form.option2.value %}checked{% endif %}>
+                    <input type="radio" id="correct_option2" name="correct_option" value="{{ form.option2.value }}" onclick="updateCorrectOptionValue('correct_option2', 'id_option2')" {% if form.instance.correct_option == form.option2.value %}checked{% endif %}>
                     <label for="correct_option2">Option 2</label>
                 </div>
                 <div>
-                    <input type="radio" id="correct_option3" name="correct_option" value="{{ form.option3.value }}" {% if form.instance.correct_option == form.option3.value %}checked{% endif %}>
+                    <input type="radio" id="correct_option3" name="correct_option" value="{{ form.option3.value }}" onclick="updateCorrectOptionValue('correct_option3', 'id_option3')" {% if form.instance.correct_option == form.option3.value %}checked{% endif %}>
                     <label for="correct_option3">Option 3</label>
                 </div>
                 <div>
-                    <input type="radio" id="correct_option4" name="correct_option" value="{{ form.option4.value }}" {% if form.instance.correct_option == form.option4.value %}checked{% endif %}>
+                    <input type="radio" id="correct_option4" name="correct_option" value="{{ form.option4.value }}" onclick="updateCorrectOptionValue('correct_option4', 'id_option4')" {% if form.instance.correct_option == form.option4.value %}checked{% endif %}>
                     <label for="correct_option4">Option 4</label>
                 </div>
             </div>

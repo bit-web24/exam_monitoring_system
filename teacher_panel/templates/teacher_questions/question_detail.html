@@ -114,7 +114,17 @@
             {% if question.option4 %}
             <div class="option"><strong>Option 4:</strong> {{ question.option4 }}</div>
             {% endif %}
-            <div class="expected-answer"><strong>Correct Option:</strong> {{ question.correct_option }}</div>
+            <div class="expected-answer"><strong>Correct Option:</strong>
+                {% if question.correct_option == question.option1 %}
+                1
+                {% elif question.correct_option == question.option2 %}
+                2
+                {% elif question.correct_option == question.option3 %}
+                3
+                {% else %}
+                4
+                {% endif %}
+            </div>
         {% elif question.question_type == 'TF' %}
             <div class="expected-truth-answer"><strong>Expected Truth Value:</strong> {{ question.expected_truth_value|yesno:"True,False" }}</div>
         {% endif %}
