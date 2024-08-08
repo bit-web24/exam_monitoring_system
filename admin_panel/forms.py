@@ -30,9 +30,10 @@ class CourseForm(forms.ModelForm):
 class ExamForm(forms.ModelForm):
     class Meta:
         model = Exam
-        fields = ['name', 'course', 'description', 'date', 'duration']
+        fields = ['name', 'course', 'description', 'date', 'duration', 'start_time']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),  # Example of using DateInput widget
+            'start_time': forms.TimeInput(attrs={'type': 'time'}),
         }
         labels = {
             'name': 'Exam Name',   # Example of custom label

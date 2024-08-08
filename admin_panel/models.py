@@ -32,6 +32,7 @@ class Exam(models.Model):
     description = models.TextField(blank=True)
     date = models.DateTimeField(null=True)
     duration = models.IntegerField(null=True)
+    start_time = models.TimeField(null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
