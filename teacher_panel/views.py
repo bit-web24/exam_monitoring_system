@@ -9,7 +9,7 @@ from django.contrib import messages
 def dashboard(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
     total = {
-        'exams': Exam.objects.count(),
+        'exams': len(TeacherExam.objects.filter(teacher=teacher)),
     }
     return render(request, 'teacher_dashboard/dashboard.html', {'teacher': teacher, 'total': total})
 
@@ -24,7 +24,10 @@ def questions(request, teacher_id):
 # SECTION: EXAMS
 def exam_list(request, teacher_id):
     teacher = get_object_or_404(Teacher, pk=teacher_id)
-    exams = Exam.objects.all()
+    teacher_exams = TeacherExam.objects.filter(teacher=teacher)
+    exams = []
+    for teacher_exam in teacher_exams:
+        exams.append(teacher_exam.exam)
     return render(request, 'teacher_exams/exam_list.html', {'teacher': teacher, 'exams': exams})
 
 def exam_detail(request, teacher_id, pk):
